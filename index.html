@@ -1,18 +1,17 @@
 <!DOCTYPE html>
-<html lang="ja">
+<html lang="en">
 <head>
-    <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-6371808196726561"
-     crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="ブラウザで3Dモデルをアップロードし、様々な角度から画像を生成・ダウンロードできる無料ツールです。">
-
-    <title>3Dモデル 画像生成ツール - 3D Model to Images Converter</title>
-    
+    <title>3Dモデルの様々な角度を画像に変換-3D Model to Imges Converter</title>
+    <link rel="icon" href="icon.png" type="image/png">
+    </head>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
-    <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
-    <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
-    <script src="https://unpkg.com/three@0.128.0/examples/js/loaders/PLYLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/PLYLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/OBJLoader.js"></script>
     <style>
         * {
             margin: 0;
@@ -31,33 +30,33 @@
         }
 
         .container {
-            max-width: 1500px; /* 少し広げる */
+            max-width: 1500px;
             margin: 0 auto;
-            background: rgba(255, 255, 255, 0.98); /* 背景をより白く、透過度を上げる */
-            backdrop-filter: blur(15px); /* ブラー効果を強める */
-            border-radius: 25px; /* 角を丸くする */
-            padding: 35px; /* パディングを増やす */
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15); /* 影を強調 */
-            border: 1px solid rgba(255, 255, 255, 0.3); /* 薄い境界線を追加 */
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
         }
 
         h1 {
             text-align: center;
             color: #333;
             margin-bottom: 30px;
-            font-size: 2.8em; /* フォントサイズを大きく */
+            font-size: 2.8em;
             background: linear-gradient(45deg, #667eea, #764ba2);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            font-weight: 700; /* 太字に */
-            letter-spacing: 1px; /* 文字間隔を広げる */
+            font-weight: 700;
+            letter-spacing: 1px;
         }
 
         .main-content {
             display: grid;
-            grid-template-columns: 2fr 1fr; /* 左パネルを広く */
-            gap: 40px; /* ギャップを広げる */
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
             align-items: start;
         }
 
@@ -69,12 +68,12 @@
         }
 
         .right-panel {
-            background: rgba(255, 255, 255, 0.9); /* 背景をより白く */
-            border-radius: 20px; /* 角を丸く */
-            padding: 30px; /* パディングを増やす */
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1); /* 影を強調 */
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
             position: sticky;
-            top: 30px; /* 少し下にずらす */
+            top: 30px;
             border: 1px solid rgba(230, 230, 230, 0.8);
         }
 
@@ -85,10 +84,10 @@
 
         .upload-box {
             border: 3px dashed #667eea;
-            border-radius: 20px; /* より丸く */
-            padding: 50px; /* パディングを増やす */
-            background: rgba(102, 126, 234, 0.08); /* 透過度を上げる */
-            transition: all 0.4s ease; /* トランジションを遅く */
+            border-radius: 20px;
+            padding: 50px;
+            background: rgba(102, 126, 234, 0.08);
+            transition: all 0.4s ease;
             cursor: pointer;
             position: relative;
             overflow: hidden;
@@ -96,14 +95,14 @@
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            min-height: 200px; /* 最小高さを設定 */
+            min-height: 200px;
         }
 
         .upload-box:hover {
             border-color: #764ba2;
-            background: rgba(118, 75, 162, 0.08); /* 透過度を上げる */
-            transform: translateY(-5px); /* より大きく移動 */
-            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1); /* ホバー時の影 */
+            background: rgba(118, 75, 162, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
         }
 
         .upload-box::before {
@@ -113,14 +112,14 @@
             left: -50%;
             width: 200%;
             height: 200%;
-            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent); /* 光沢を強調 */
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
             transform: rotate(45deg);
-            transition: all 0.7s ease; /* トランジションを遅く */
+            transition: all 0.7s ease;
             opacity: 0;
         }
 
         .upload-box:hover::before {
-            animation: shimmer 1.8s infinite; /* アニメーションを遅く */
+            animation: shimmer 1.8s infinite;
             opacity: 1;
         }
 
@@ -130,20 +129,20 @@
         }
 
         .upload-icon {
-            font-size: 3.5em; /* アイコンを大きく */
+            font-size: 3.5em;
             color: #667eea;
-            margin-bottom: 20px; /* 間隔を広げる */
+            margin-bottom: 20px;
         }
 
         .upload-text {
-            font-size: 1.3em; /* フォントサイズを大きく */
-            color: #444; /* 色を濃く */
+            font-size: 1.3em;
+            color: #444;
             font-weight: 600;
             margin-bottom: 10px;
         }
 
         .upload-hint {
-            font-size: 1em; /* フォントサイズを大きく */
+            font-size: 1em;
             color: #777;
             font-weight: 500;
         }
@@ -153,97 +152,94 @@
         }
 
         .viewer-container {
-            background: #f0f2f5; /* 背景色をより明るく */
-            border-radius: 20px; /* 角を丸く */
-            padding: 25px; /* パディングを増やす */
+            background: #f0f2f5;
+            border-radius: 20px;
+            padding: 25px;
             margin-bottom: 30px;
-            box-shadow: inset 0 3px 15px rgba(0, 0, 0, 0.08); /* 影を強調 */
+            box-shadow: inset 0 3px 15px rgba(0, 0, 0, 0.08);
             display: none;
-            flex-grow: 1; /* 残りのスペースを埋める */
+            flex-grow: 1;
         }
 
         #viewer {
             width: 100%;
-            height: 450px; /* 高さを増やす */
-            border-radius: 15px; /* 角を丸く */
+            height: 450px;
+            border-radius: 15px;
             overflow: hidden;
-            background: #e9eff3; /* ビューア背景色 */
-            position: relative; /* 子要素のabsolute配置のために必要 */
+            background: #e9eff3;
+            position: relative;
         }
 
-        /* #modelPreviewImage に関連するCSSは削除 */
-
-
         .settings-section {
-            margin-bottom: 30px; /* 間隔を広げる */
+            margin-bottom: 30px;
         }
 
         .settings-title {
-            font-size: 1.4em; /* フォントサイズを大きく */
+            font-size: 1.4em;
             color: #333;
-            margin-bottom: 20px; /* 間隔を広げる */
-            font-weight: 700; /* 太字に */
+            margin-bottom: 20px;
+            font-weight: 700;
             display: flex;
             align-items: center;
-            gap: 12px; /* アイコンとの間隔 */
+            gap: 12px;
             padding-bottom: 10px;
-            border-bottom: 2px solid #eee; /* 下線を追加 */
+            border-bottom: 2px solid #eee;
         }
 
         .style-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); /* 適応型グリッド */
-            gap: 15px; /* ギャップを広げる */
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
             margin-bottom: 20px;
         }
 
         .style-option {
             background: white;
             border: 2px solid #e9ecef;
-            border-radius: 15px; /* より丸く */
-            padding: 18px; /* パディングを増やす */
+            border-radius: 15px;
+            padding: 18px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
             position: relative;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05); /* 薄い影 */
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
         }
 
         .style-option:hover {
             border-color: #667eea;
-            transform: translateY(-3px); /* より大きく移動 */
-            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1); /* ホバー時の影 */
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
         }
 
         .style-option.selected {
             border-color: #667eea;
-            background: rgba(102, 126, 234, 0.15); /* 透過度を上げる */
-            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3); /* 選択時の強調 */
+            background: rgba(102, 126, 234, 0.15);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
         }
 
         .style-option .icon {
-            font-size: 2.2em; /* アイコンを大きく */
+            font-size: 2.2em;
             margin-bottom: 10px;
         }
 
         .style-option .name {
-            font-weight: 700; /* 太字に */
+            font-weight: 700;
             color: #333;
             margin-bottom: 5px;
             font-size: 1.1em;
         }
 
         .style-option .description {
-            font-size: 0.85em; /* フォントサイズを調整 */
+            font-size: 0.85em;
             color: #666;
         }
 
         .custom-settings {
             display: none;
-            margin-top: 20px; /* 間隔を広げる */
-            padding: 20px; /* パディングを増やす */
-            background: rgba(248, 249, 250, 0.9); /* 背景色をより明るく */
-            border-radius: 15px; /* 角を丸く */
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(248, 249, 250, 0.9);
+            border-radius: 15px;
             border: 1px solid #e0e0e0;
         }
 
@@ -252,23 +248,23 @@
         }
 
         .setting-group {
-            margin-bottom: 20px; /* 間隔を広げる */
+            margin-bottom: 20px;
         }
 
         .setting-label {
             display: block;
-            margin-bottom: 8px; /* 間隔を広げる */
+            margin-bottom: 8px;
             color: #555;
-            font-weight: 600; /* 太字に */
+            font-weight: 600;
             font-size: 0.95em;
         }
 
         .setting-input {
             width: 100%;
-            padding: 10px 15px; /* パディングを増やす */
+            padding: 10px 15px;
             border: 1px solid #ddd;
-            border-radius: 8px; /* より丸く */
-            font-size: 1em; /* フォントサイズを大きく */
+            border-radius: 8px;
+            font-size: 1em;
             transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -280,11 +276,11 @@
 
         .color-input {
             width: 100%;
-            height: 45px; /* 高さを増やす */
+            height: 45px;
             border: 1px solid #ddd;
-            border-radius: 8px; /* より丸く */
+            border-radius: 8px;
             cursor: pointer;
-            -webkit-appearance: none; /* デフォルトのスタイルをリセット */
+            -webkit-appearance: none;
             appearance: none;
             padding: 0;
             background: transparent;
@@ -305,7 +301,7 @@
         .slider-group {
             display: flex;
             align-items: center;
-            gap: 15px; /* 間隔を広げる */
+            gap: 15px;
         }
 
         .slider-input {
@@ -342,9 +338,9 @@
         }
 
         .slider-value {
-            min-width: 50px; /* 幅を広げる */
-            text-align: right; /* 右寄せ */
-            font-weight: 700; /* 太字に */
+            min-width: 50px;
+            text-align: right;
+            font-weight: 700;
             color: #667eea;
             font-size: 1em;
         }
@@ -355,15 +351,15 @@
 
         .angle-options {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr)); /* 適応型グリッド */
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
             gap: 10px;
         }
 
         .angle-option {
             background: white;
-            border: 2px solid #e9ecef; /* 太さを増す */
-            border-radius: 10px; /* より丸く */
-            padding: 12px; /* パディングを増やす */
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px;
             text-align: center;
             cursor: pointer;
             transition: all 0.3s ease;
@@ -382,14 +378,14 @@
             border-color: #667eea;
             background: rgba(102, 126, 234, 0.15);
             color: #667eea;
-            font-weight: 700; /* 太字に */
+            font-weight: 700;
             box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
         }
 
         .custom-angles-section {
             margin-top: 25px;
             padding-top: 20px;
-            border-top: 1px dashed #e0e0e0; /* 破線を追加 */
+            border-top: 1px dashed #e0e0e0;
         }
 
         .angle-input-group {
@@ -414,18 +410,17 @@
             text-align: center;
         }
 
-
         .btn {
             background: linear-gradient(45deg, #667eea, #764ba2);
             color: white;
             border: none;
-            padding: 14px 28px; /* パディングを増やす */
-            border-radius: 30px; /* より丸く */
-            font-size: 1.05em; /* フォントサイズを大きく */
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1.05em;
             cursor: pointer;
             transition: all 0.3s ease;
             margin: 5px 0;
-            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3); /* 影を強調 */
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
             width: 100%;
             font-weight: 600;
             display: flex;
@@ -435,8 +430,8 @@
         }
 
         .btn:hover {
-            transform: translateY(-3px); /* より大きく移動 */
-            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4); /* 影を強調 */
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
         }
 
         .btn:active {
@@ -453,7 +448,7 @@
 
         .btn.generate-btn {
             background: linear-gradient(45deg, #28a745, #20c997);
-            font-size: 1.2em; /* より大きく */
+            font-size: 1.2em;
             padding: 18px 28px;
             margin-top: 25px;
             box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
@@ -465,16 +460,16 @@
 
         .images-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* カードサイズを調整 */
-            gap: 25px; /* ギャップを広げる */
-            margin-top: 35px; /* 間隔を広げる */
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 35px;
         }
 
         .image-item {
             background: white;
-            border-radius: 20px; /* より丸く */
-            padding: 25px; /* パディングを増やす */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* 影を強調 */
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             display: flex;
             flex-direction: column;
@@ -482,34 +477,34 @@
         }
 
         .image-item:hover {
-            transform: translateY(-8px); /* より大きく移動 */
-            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15); /* ホバー時の影 */
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
         }
 
         .image-item img {
             width: 100%;
-            height: 220px; /* 高さを増やす */
+            height: 220px;
             object-fit: contain;
-            border-radius: 15px; /* 角を丸く */
+            border-radius: 15px;
             background: #f8f9fa;
-            margin-bottom: 20px; /* 間隔を広げる */
+            margin-bottom: 20px;
             border: 1px solid #eee;
         }
 
         .image-item h3 {
             text-align: center;
-            margin-bottom: 18px; /* 間隔を広げる */
+            margin-bottom: 18px;
             color: #333;
-            font-size: 1.2em; /* フォントサイズを大きく */
+            font-size: 1.2em;
             font-weight: 600;
         }
 
         .download-btn {
-            width: calc(100% - 20px); /* 左右に少し余白 */
+            width: calc(100% - 20px);
             background: linear-gradient(45deg, #667eea, #764ba2);
             font-size: 0.95em;
             padding: 10px 20px;
-            margin-top: 0; /* 上のmarginをリセット */
+            margin-top: 0;
         }
         .download-btn:hover {
             box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
@@ -517,7 +512,7 @@
 
         .download-all-btn {
             background: linear-gradient(45deg, #ffc107, #ff8c00);
-            margin-top: 25px; /* 間隔を広げる */
+            margin-top: 25px;
             box-shadow: 0 10px 25px rgba(255, 193, 7, 0.3);
         }
 
@@ -527,11 +522,11 @@
 
         .progress-bar {
             width: 100%;
-            height: 8px; /* 高さを増す */
+            height: 8px;
             background: #e9ecef;
-            border-radius: 4px; /* より丸く */
+            border-radius: 4px;
             overflow: hidden;
-            margin: 25px 0; /* 間隔を広げる */
+            margin: 25px 0;
             display: none;
             box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
         }
@@ -540,17 +535,17 @@
             height: 100%;
             background: linear-gradient(90deg, #667eea, #764ba2);
             border-radius: 4px;
-            transition: width 0.4s ease; /* トランジションを遅く */
+            transition: width 0.4s ease;
             width: 0%;
         }
 
         .status {
             text-align: center;
-            margin: 25px 0; /* 間隔を広げる */
-            font-weight: 600; /* 太字に */
+            margin: 25px 0;
+            font-weight: 600;
             color: #555;
-            padding: 18px; /* パディングを増やす */
-            border-radius: 15px; /* より丸く */
+            padding: 18px;
+            border-radius: 15px;
             font-size: 1.05em;
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
         }
@@ -558,16 +553,16 @@
         .error {
             color: #dc3545;
             background: rgba(220, 53, 69, 0.1);
-            border-left: 5px solid #dc3545; /* 太さを増す */
+            border-left: 5px solid #dc3545;
         }
 
         .success {
             color: #28a745;
             background: rgba(40, 167, 69, 0.1);
-            border-left: 5px solid #28a745; /* 太さを増す */
+            border-left: 5px solid #28a745;
         }
 
-        @media (max-width: 1200px) { /* ブレークポイントを変更 */
+        @media (max-width: 1200px) {
             .main-content {
                 grid-template-columns: 1fr;
             }
@@ -648,8 +643,7 @@
                 </div>
 
                 <div class="viewer-container" id="viewerContainer">
-                    <div id="viewer">
-                        </div>
+                    <div id="viewer"></div>
                 </div>
 
                 <div class="progress-bar" id="progressBar">
@@ -667,7 +661,12 @@
                         🎨 レンダリングスタイル
                     </div>
                     <div class="style-options">
-                        <div class="style-option selected" data-style="realistic">
+                        <div class="style-option selected" data-style="original">
+                            <div class="icon">🖼️</div>
+                            <div class="name">オリジナル</div>
+                            <div class="description">写実的な質感</div>
+                        </div>
+                        <div class="style-option" data-style="realistic">
                             <div class="icon">🌟</div>
                             <div class="name">リアリスティック</div>
                             <div class="description">写実的な質感</div>
@@ -728,9 +727,22 @@
                     </div>
                 </div>
 
+                <div class="settings-section">
+                    <div class="settings-title">
+                        🔍 撮影アングル
+                    </div>
+                    <div class="setting-group">
+                        <label class="setting-label">Zoom</label>
+                        <div class="slider-group">
+                            <input type="range" class="slider-input" id="zoomSlider" min="0.5" max="5" step="0.1" value="1">
+                            <span class="slider-value" id="zoomValue">1.0x</span>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="angles-section">
                     <div class="settings-title">
-                        📐 撮影アングル
+                        📐 Camera Angles
                     </div>
                     <div class="angle-options">
                         <div class="angle-option selected" data-angle="front">正面</div>
@@ -792,8 +804,8 @@
         <footer>
         <p>&copy; 2025 KENTA TAKAHASHI. All Rights Reserved.</p>
         <p>Powered by <a href="https://threejs.org/" target="_blank">Three.js</a> (MIT Licensed).</p>
-        <p><a href="/LICENSE" target="_blank">ライセンス情報を見る</a></p>
-        <p><a href="/terms-of-use.html">利用規約</a> | <a href="/privacy-policy.html">プライバシーポリシー</a></p>
+        <p><a href="LICENSE" target="_blank">ライセンス情報を見る</a></p>
+        <p><a href="terms-of-use.html">利用規約</a> | <a href="privacy-policy.html">プライバシーポリシー</a></p>
     </footer>
     </div>
 
@@ -805,9 +817,8 @@
                 this.renderer = null;
                 this.model = null;
                 this.generatedImages = [];
-                this.selectedStyle = 'realistic';
+                this.selectedStyle = 'original';
                 this.selectedAngles = ['front', 'back', 'left', 'right', 'top'];
-                // カスタム角度を保存する配列
                 this.customAngles = []; 
                 this.renderSettings = {
                     bgColor: '#f8f9fa',
@@ -816,78 +827,60 @@
                     shininess: 100,
                     resolution: 1024
                 };
+                this.zoomFactor = 1;
+                this.initialCameraPosition = new THREE.Vector3();
                 this.init();
             }
 
             init() {
                 this.setupEventListeners();
-                this.updateViewerBackground(); // 初期背景色を設定
+                this.updateViewerBackground();
             }
 
             setupEventListeners() {
-                // ファイルアップロード
-                document.getElementById('fileInput').addEventListener('change', (e) => {
-                    this.handleFileUpload(e);
-                });
-
-                // スタイル選択
+                document.getElementById('fileInput').addEventListener('change', (e) => this.handleFileUpload(e));
                 document.querySelectorAll('.style-option').forEach(option => {
-                    option.addEventListener('click', () => {
-                        this.selectStyle(option.dataset.style);
-                    });
+                    option.addEventListener('click', () => this.selectStyle(option.dataset.style));
                 });
-
-                // アングル選択
                 document.querySelectorAll('.angle-option').forEach(option => {
-                    option.addEventListener('click', () => {
-                        this.toggleAngle(option.dataset.angle, option);
-                    });
+                    option.addEventListener('click', () => this.toggleAngle(option.dataset.angle, option));
                 });
-
-                // カスタム角度追加ボタン
-                document.getElementById('addCustomAngleBtn').addEventListener('click', () => {
-                    this.addCustomAngle();
-                });
-
-                // カスタム設定
-                document.getElementById('bgColor').addEventListener('change', (e) => {
+                document.getElementById('addCustomAngleBtn').addEventListener('click', () => this.addCustomAngle());
+                document.getElementById('bgColor').addEventListener('input', (e) => {
                     this.renderSettings.bgColor = e.target.value;
                     this.updateScene();
-                    this.updateViewerBackground(); // ビューアの背景色も更新
+                    this.updateViewerBackground();
                 });
-
                 document.getElementById('lightIntensity').addEventListener('input', (e) => {
                     this.renderSettings.lightIntensity = parseFloat(e.target.value);
                     document.getElementById('lightValue').textContent = e.target.value;
                     this.updateScene();
                 });
-
                 document.getElementById('shadowIntensity').addEventListener('input', (e) => {
                     this.renderSettings.shadowIntensity = parseFloat(e.target.value);
                     document.getElementById('shadowValue').textContent = e.target.value;
                     this.updateScene();
                 });
-
                 document.getElementById('shininess').addEventListener('input', (e) => {
                     this.renderSettings.shininess = parseInt(e.target.value);
                     document.getElementById('shininessValue').textContent = e.target.value;
                     this.updateScene();
                 });
-
-                // 解像度設定
+                document.getElementById('zoomSlider').addEventListener('input', (e) => {
+                    this.updateZoom(parseFloat(e.target.value));
+                });
                 document.getElementById('resolution').addEventListener('change', (e) => {
                     this.renderSettings.resolution = parseInt(e.target.value);
                 });
-
-                // 生成ボタン
-                document.getElementById('generateBtn').addEventListener('click', () => {
-                    this.generateImages();
-                });
-
-                // 全ダウンロードボタン
-                document.getElementById('downloadAllBtn').addEventListener('click', () => {
-                    this.downloadAllImages();
-                });
+                document.getElementById('generateBtn').addEventListener('click', () => this.generateImages());
+                document.getElementById('downloadAllBtn').addEventListener('click', () => this.downloadAllImages());
+            }
+            
+            updateZoom(zoomValue) {
+                if (!this.camera || !this.initialCameraPosition) return;
+                this.zoomFactor = zoomValue;
+                this.camera.position.copy(this.initialCameraPosition).divideScalar(this.zoomFactor);
+                document.getElementById('zoomValue').textContent = `${zoomValue.toFixed(1)}x`;
             }
 
             selectStyle(style) {
@@ -909,25 +902,19 @@
             }
 
             toggleAngle(angle, element) {
-                // カスタム角度の追加ボタンによって生成された要素を識別するためのカスタムデータ属性を追加
                 const isCustomAngleElement = element.dataset.customAngle === 'true';
+                element.classList.toggle('selected');
 
                 if (isCustomAngleElement) {
-                    // カスタム角度の場合、選択状態を切り替える
-                    element.classList.toggle('selected');
-                    const angleValue = JSON.parse(element.dataset.angleValue); // JSON文字列をパース
+                    const angleValue = JSON.parse(element.dataset.angleValue);
                     if (element.classList.contains('selected')) {
                         this.customAngles.push(angleValue);
                     } else {
                         this.customAngles = this.customAngles.filter(a => JSON.stringify(a) !== JSON.stringify(angleValue));
                     }
                 } else {
-                    // 事前定義された角度の場合
-                    element.classList.toggle('selected');
                     if (element.classList.contains('selected')) {
-                        if (!this.selectedAngles.includes(angle)) {
-                            this.selectedAngles.push(angle);
-                        }
+                        if (!this.selectedAngles.includes(angle)) this.selectedAngles.push(angle);
                     } else {
                         this.selectedAngles = this.selectedAngles.filter(a => a !== angle);
                     }
@@ -940,27 +927,22 @@
                 const rotateZ = parseFloat(document.getElementById('rotateZ').value);
 
                 if (isNaN(rotateX) || isNaN(rotateY) || isNaN(rotateZ)) {
-                    this.showError('有効な角度を入力してください。');
+                    this.showError('Please enter valid angles.');
                     return;
                 }
 
                 const newAngle = { x: rotateX, y: rotateY, z: rotateZ };
-                
-                // 既に存在するカスタム角度かチェック
-                const exists = this.customAngles.some(angle => 
-                    angle.x === newAngle.x && angle.y === newAngle.y && angle.z === newAngle.z
-                );
+                const exists = this.customAngles.some(angle => angle.x === newAngle.x && angle.y === newAngle.y && angle.z === newAngle.z);
 
                 if (exists) {
-                    this.showError('このカスタム角度は既に存在します。');
+                    this.showError('This custom angle already exists.');
                     return;
                 }
 
                 this.customAngles.push(newAngle);
                 this.renderCustomAngles();
-                this.showSuccess('カスタム角度が追加されました！');
+                this.showSuccess('Custom angle added successfully!');
                 
-                // 新しく追加されたカスタム角度オプションを選択状態にする
                 const newOption = document.querySelector(`.angle-option[data-angle-value='${JSON.stringify(newAngle)}']`);
                 if (newOption && !newOption.classList.contains('selected')) {
                     newOption.classList.add('selected');
@@ -969,52 +951,49 @@
 
             renderCustomAngles() {
                 const angleOptionsContainer = document.querySelector('.angle-options');
-                // 事前定義された角度オプションを再描画しないように、カスタム角度のみを削除
                 const existingCustomAngles = angleOptionsContainer.querySelectorAll('[data-custom-angle="true"]');
                 existingCustomAngles.forEach(el => el.remove());
 
                 this.customAngles.forEach(angle => {
                     const angleOption = document.createElement('div');
-                    angleOption.className = 'angle-option selected'; // 追加されたらデフォルトで選択
-                    angleOption.dataset.customAngle = 'true'; // カスタム角度であることを示す
-                    angleOption.dataset.angleValue = JSON.stringify(angle); // 角度の値をJSON文字列として保存
+                    angleOption.className = 'angle-option selected';
+                    angleOption.dataset.customAngle = 'true';
+                    angleOption.dataset.angleValue = JSON.stringify(angle);
                     angleOption.textContent = `X:${angle.x}° Y:${angle.y}° Z:${angle.z}°`;
-                    angleOption.addEventListener('click', () => {
-                        this.toggleAngle(null, angleOption); // angleは使用しないのでnull
-                    });
+                    angleOption.addEventListener('click', () => this.toggleAngle(null, angleOption));
                     angleOptionsContainer.appendChild(angleOption);
                 });
             }
-
 
             async handleFileUpload(event) {
                 const file = event.target.files[0];
                 if (!file) return;
 
                 if (file.size > 50 * 1024 * 1024) {
-                    this.showError('ファイルサイズが50MBを超えています。');
+                    this.showError('File size exceeds 50MB.');
                     return;
                 }
 
-                this.showStatus('ファイルを読み込み中...');
-                this.generatedImages = []; // 新しいファイルがアップロードされたら既存の画像をクリア
-                document.getElementById('imagesGrid').innerHTML = ''; // グリッドもクリア
-                document.getElementById('downloadAllBtn').style.display = 'none'; // ダウンロードボタンを非表示に
+                this.showStatus('Loading file...');
+                this.generatedImages = [];
+                document.getElementById('imagesGrid').innerHTML = '';
+                document.getElementById('downloadAllBtn').style.display = 'none';
+
+                document.getElementById('zoomSlider').value = 1;
+                this.updateZoom(1);
+                
                 document.getElementById('viewerContainer').style.display = 'block';
+
                 try {
                     const arrayBuffer = await file.arrayBuffer();
                     await this.loadModel(arrayBuffer, file.name);
-                    this.showSuccess('3Dモデルが正常に読み込まれました！');
-                    //document.getElementById('viewerContainer').style.display = 'block';
-                    document.getElementById('generateBtn').disabled = false;
                     
-                    // モデル読み込み後、canvasを表示
-                    if (this.renderer && this.renderer.domElement) {
-                        this.renderer.domElement.style.display = 'block';
-                    }
-
+                    this.showSuccess('3D model loaded successfully!');
+                    document.getElementById('generateBtn').disabled = false;
                 } catch (error) {
-                    this.showError('ファイルの読み込みに失敗しました: ' + error.message);
+                    console.error(error);
+                    this.showError('Failed to load file: ' + error.message);
+                    document.getElementById('viewerContainer').style.display = 'none';
                     document.getElementById('generateBtn').disabled = true;
                 }
             }
@@ -1024,20 +1003,23 @@
                 
                 const extension = filename.split('.').pop().toLowerCase();
                 
-                // 既存のモデルがあれば削除
                 if (this.model) {
                     this.scene.remove(this.model);
                     this.model.traverse((child) => {
                         if (child.isMesh) {
-                            if (child.geometry) {
-                                child.geometry.dispose();
-                            }
-                            if (child.material) {
-                                if (Array.isArray(child.material)) {
-                                    child.material.forEach(m => m.dispose());
-                                } else {
-                                    child.material.dispose();
-                                }
+                            child.geometry?.dispose();
+                            if (Array.isArray(child.material)) {
+                                child.material.forEach(m => {
+                                    m.dispose();
+                                    Object.keys(m).forEach(prop => {
+                                        if(m[prop] && typeof m[prop].dispose === 'function') m[prop].dispose();
+                                    })
+                                });
+                            } else if(child.material) {
+                                child.material.dispose();
+                                Object.keys(child.material).forEach(prop => {
+                                    if(child.material[prop] && typeof child.material[prop].dispose === 'function') child.material[prop].dispose();
+                                })
                             }
                         }
                     });
@@ -1052,9 +1034,8 @@
                     await this.loadPLY(arrayBuffer);
                 } else if (extension === 'gltf' || extension === 'glb') {
                     await this.loadGLTF(arrayBuffer);
-                }
-                else {
-                    throw new Error('サポートされていないファイル形式です。');
+                } else {
+                    throw new Error('Unsupported file format.');
                 }
 
                 this.centerAndScaleModel();
@@ -1063,21 +1044,17 @@
             }
 
             setupScene() {
-                console.log("setupScene")
                 const container = document.getElementById('viewer');
                 const width = container.clientWidth;
                 const height = container.clientHeight;
 
-                // Scene
                 this.scene = new THREE.Scene();
                 this.scene.background = new THREE.Color(this.renderSettings.bgColor);
 
-                // Camera
                 this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
                 this.camera.position.set(5, 5, 5);
                 this.camera.lookAt(0, 0, 0);
 
-                // Renderer
                 this.renderer = new THREE.WebGLRenderer({ 
                     antialias: true,
                     preserveDrawingBuffer: true
@@ -1086,46 +1063,30 @@
                 this.renderer.shadowMap.enabled = true;
                 this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
                 
-                // Clear existing canvas if any
                 const existingCanvas = container.querySelector('canvas');
-                if (existingCanvas) {
-                    container.removeChild(existingCanvas);
-                    console.log("existingCanvas")
-                }
+                if (existingCanvas) container.removeChild(existingCanvas);
                 container.appendChild(this.renderer.domElement);
 
                 this.setupLighting();
             }
 
             setupLighting() {
-                // Clear existing lights
                 const lights = this.scene.children.filter(child => child.isLight);
                 lights.forEach(light => this.scene.remove(light));
 
-                // Ambient light
-                const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
-                this.scene.add(ambientLight);
+                this.scene.add(new THREE.AmbientLight(0xffffff, 0.5));
 
-                // Main directional light
                 const directionalLight = new THREE.DirectionalLight(0xffffff, this.renderSettings.lightIntensity);
                 directionalLight.position.set(10, 10, 5);
                 directionalLight.castShadow = true;
                 directionalLight.shadow.mapSize.width = 2048;
                 directionalLight.shadow.mapSize.height = 2048;
-                directionalLight.shadow.camera.near = 0.5;
-                directionalLight.shadow.camera.far = 50;
-                directionalLight.shadow.camera.left = -10;
-                directionalLight.shadow.camera.right = 10;
-                directionalLight.shadow.camera.top = 10;
-                directionalLight.shadow.camera.bottom = -10;
                 this.scene.add(directionalLight);
 
-                // Fill light
                 const fillLight = new THREE.DirectionalLight(0xffffff, this.renderSettings.lightIntensity * 0.3);
                 fillLight.position.set(-5, 5, -5);
                 this.scene.add(fillLight);
 
-                // Rim light
                 const rimLight = new THREE.DirectionalLight(0xffffff, this.renderSettings.lightIntensity * 0.2);
                 rimLight.position.set(0, -10, 10);
                 this.scene.add(rimLight);
@@ -1133,7 +1094,6 @@
 
             updateScene() {
                 if (!this.scene) return;
-                console.log("updateScene")
                 this.scene.background = new THREE.Color(this.renderSettings.bgColor);
                 this.setupLighting();
                 this.updateMaterialStyle();
@@ -1141,71 +1101,42 @@
 
             updateMaterialStyle() {
                 if (!this.model) return;
-                console.log("updateMaterialStyle")
-                console.log(this.model)
-                let material;
                 
-                switch (this.selectedStyle) {
-                    case 'realistic':
-                        material = new THREE.MeshPhongMaterial({
-                            color: 0x667eea,
-                            shininess: this.renderSettings.shininess, // カスタム設定を適用
-                            specular: 0x333333
-                        });
-                        break;
-                        
-                    case 'sketch':
-                        material = new THREE.MeshLambertMaterial({
-                            color: 0x333333,
-                            wireframe: false
-                        });
-                        break;
-                        
-                    case 'wireframe':
-                        material = new THREE.MeshBasicMaterial({
-                            color: 0x333333,
-                            wireframe: true,
-                            wireframeLinewidth: 2
-                        });
-                        break;
-                        
-                    case 'toon':
-                        material = new THREE.MeshToonMaterial({
-                            color: 0x667eea,
-                            gradientMap: this.createToonGradient()
-                        });
-                        break;
-                        
-                    case 'clay':
-                        material = new THREE.MeshLambertMaterial({
-                            color: 0xd4af37,
-                            flatShading: false
-                        });
-                        break;
-                        
-                    case 'custom':
-                        material = new THREE.MeshPhongMaterial({
-                            color: 0x667eea,
-                            shininess: this.renderSettings.shininess,
-                            specular: 0x333333
-                        });
-                        break;
-                        
-                    default:
-                        material = new THREE.MeshPhongMaterial({
-                            color: 0x667eea,
-                            shininess: 100
-                        });
+                if (this.selectedStyle === 'original') {
+                    this.model.traverse((child) => {
+                        if (child.isMesh && child.userData.originalMaterial) {
+                            child.material = child.userData.originalMaterial;
+                        }
+                    });
+                    return;
                 }
 
-                // モデルの既存の材質を解放してから新しい材質を適用
+                let material;
+                switch (this.selectedStyle) {
+                    case 'realistic':
+                        material = new THREE.MeshPhongMaterial({ color: 0x667eea, shininess: this.renderSettings.shininess, specular: 0x333333 });
+                        break;
+                    case 'sketch':
+                        material = new THREE.MeshLambertMaterial({ color: 0x333333, wireframe: false });
+                        break;
+                    case 'wireframe':
+                        material = new THREE.MeshBasicMaterial({ color: 0x333333, wireframe: true, wireframeLinewidth: 2 });
+                        break;
+                    case 'toon':
+                        material = new THREE.MeshToonMaterial({ color: 0x667eea, gradientMap: this.createToonGradient() });
+                        break;
+                    case 'clay':
+                        material = new THREE.MeshLambertMaterial({ color: 0xd4af37, flatShading: false });
+                        break;
+                    case 'custom':
+                        material = new THREE.MeshPhongMaterial({ color: 0x667eea, shininess: this.renderSettings.shininess, specular: 0x333333 });
+                        break;
+                    default:
+                        material = new THREE.MeshPhongMaterial({ color: 0x667eea, shininess: 100 });
+                }
+
                 this.model.traverse((child) => {
                     if (child.isMesh) {
-                        if (Array.isArray(child.material)) {
-                            child.material.forEach(m => m.dispose());
-                        } else if (child.material) { // materialがnullでないことを確認
-                            child.material.dispose();
-                        }
                         child.material = material;
                     }
                 });
@@ -1213,170 +1144,102 @@
 
             createToonGradient() {
                 const canvas = document.createElement('canvas');
-                canvas.width = 4;
-                canvas.height = 1;
-                
+                canvas.width = 4; canvas.height = 1;
                 const context = canvas.getContext('2d');
                 const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
                 gradient.addColorStop(0, '#000000');
                 gradient.addColorStop(0.4, '#444444');
                 gradient.addColorStop(0.8, '#888888');
                 gradient.addColorStop(1, '#ffffff');
-                
                 context.fillStyle = gradient;
                 context.fillRect(0, 0, canvas.width, canvas.height);
-                
                 const texture = new THREE.CanvasTexture(canvas);
                 texture.minFilter = THREE.NearestFilter;
                 texture.magFilter = THREE.NearestFilter;
-                
                 return texture;
             }
 
-           async loadOBJ(arrayBuffer) {
-                const text = new TextDecoder().decode(arrayBuffer);
-                const geometry = new THREE.BufferGeometry();
-                
-                const vertices = [];
-                const normals = [];
-                const uvs = [];
-                const faces = [];
-                
-                const lines = text.split('\n');
-                
-                for (let line of lines) {
-                    line = line.trim();
-                    if (line.startsWith('v ')) {
-                        const parts = line.split(/\s+/);
-                        vertices.push(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
-                    } else if (line.startsWith('vn ')) {
-                        const parts = line.split(/\s+/);
-                        normals.push(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
-                    } else if (line.startsWith('vt ')) {
-                        const parts = line.split(/\s+/);
-                        uvs.push(parseFloat(parts[1]), parseFloat(parts[2]));
-                    } else if (line.startsWith('f ')) {
-                        const parts = line.split(/\s+/).slice(1);
-                        for (let i = 1; i < parts.length - 1; i++) {
-                            faces.push(parts[0], parts[i], parts[i + 1]);
-                        }
+            // ▼▼▼ 修正点: loadOBJを公式ローダーを使うように修正 ▼▼▼
+            async loadOBJ(arrayBuffer) {
+                return new Promise((resolve, reject) => {
+                    try {
+                        const text = new TextDecoder().decode(arrayBuffer);
+                        const loader = new THREE.OBJLoader();
+                        const object = loader.parse(text);
+
+                        object.traverse(child => {
+                            if (child.isMesh) {
+                                child.material = new THREE.MeshPhongMaterial({ color: 0x667eea, specular: 0x111111, shininess: 200 });
+                                child.castShadow = true;
+                                child.receiveShadow = true;
+                                child.userData.originalMaterial = child.material.clone();
+                            }
+                        });
+
+                        this.model = object;
+                        this.scene.add(this.model);
+                        resolve();
+                    } catch (error) {
+                        reject(error);
                     }
-                }
-                
-                const positionArray = [];
-                const normalArray = [];
-                const uvArray = [];
-                
-                for (let face of faces) {
-                    const indices = face.split('/');
-                    const vertexIndex = parseInt(indices[0]) - 1;
-                    const uvIndex = indices[1] ? parseInt(indices[1]) - 1 : -1;
-                    const normalIndex = indices[2] ? parseInt(indices[2]) - 1 : -1;
-                    
-                    positionArray.push(
-                        vertices[vertexIndex * 3],
-                        vertices[vertexIndex * 3 + 1],
-                        vertices[vertexIndex * 3 + 2]
-                    );
-                    
-                    if (uvIndex >= 0) {
-                        uvArray.push(uvs[uvIndex * 2], uvs[uvIndex * 2 + 1]);
-                    }
-                    
-                    if (normalIndex >= 0) {
-                        normalArray.push(
-                            normals[normalIndex * 3],
-                            normals[normalIndex * 3 + 1],
-                            normals[normalIndex * 3 + 2]
-                        );
-                    }
-                }
-                
-                geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionArray, 3));
-                if (normalArray.length > 0) {
-                    geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normalArray, 3));
-                } else {
-                    geometry.computeVertexNormals();
-                }
-                if (uvArray.length > 0) {
-                    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvArray, 2));
-                }
-                
-                const material = new THREE.MeshPhongMaterial({ color: 0x667eea });
-                this.model = new THREE.Mesh(geometry, material);
-                this.scene.add(this.model);
+                });
             }
+            // ▲▲▲ 修正ここまで ▲▲▲
 
             async loadSTL(arrayBuffer) {
-                // Three.jsのSTLLoaderを使用する
                 return new Promise((resolve, reject) => {
                     const loader = new THREE.STLLoader();
                     loader.parse(arrayBuffer, (geometry) => {
                         geometry.computeVertexNormals();
-                        const material = new THREE.MeshPhongMaterial({ color: 0x667eea });
+                        const material = new THREE.MeshPhongMaterial({ color: 0x667eea, specular: 0x111111, shininess: 200 });
                         this.model = new THREE.Mesh(geometry, material);
+                        this.model.traverse(node => {
+                            if(node.isMesh) node.userData.originalMaterial = node.material.clone();
+                        });
                         this.scene.add(this.model);
                         resolve();
-                    }, undefined, (error) => {
-                        reject(error);
-                    });
+                    }, undefined, (error) => reject(error));
                 });
             }
 
             async loadPLY(arrayBuffer) {
-                // Three.jsのPLYLoaderを使用する
-                return new Promise((resolve, reject) => {
+                 return new Promise((resolve, reject) => {
                     const loader = new THREE.PLYLoader();
                     loader.parse(arrayBuffer, (geometry) => {
                         geometry.computeVertexNormals();
-                        const material = new THREE.MeshPhongMaterial({ color: 0x667eea });
+                        const material = new THREE.MeshPhongMaterial({ vertexColors: true, specular: 0x111111, shininess: 200 });
                         this.model = new THREE.Mesh(geometry, material);
+                        this.model.traverse(node => {
+                            if(node.isMesh) node.userData.originalMaterial = node.material.clone();
+                        });
                         this.scene.add(this.model);
                         resolve();
-                    }, undefined, (error) => {
-                        reject(error);
-                    });
+                    }, undefined, (error) => reject(error));
                 });
             }
 
             async loadGLTF(arrayBuffer) {
-                // Three.jsのGLTFLoaderを使用する
                 return new Promise((resolve, reject) => {
                     const loader = new THREE.GLTFLoader();
                     loader.parse(arrayBuffer, '', (gltf) => {
                         this.model = gltf.scene;
                         this.scene.add(this.model);
 
-                        // モデル内のすべてのメッシュに影のプロパティを設定
                         this.model.traverse((child) => {
                             if (child.isMesh) {
                                 child.castShadow = true;
                                 child.receiveShadow = true;
-                                // 既存の材質がある場合は、その材質のコピーを作成し、光沢などを維持する
                                 if (child.material) {
                                     if (Array.isArray(child.material)) {
-                                        child.material = child.material.map(m => {
-                                            const newMaterial = m.clone();
-                                            newMaterial.shininess = this.renderSettings.shininess;
-                                            return newMaterial;
-                                        });
+                                        child.userData.originalMaterial = child.material.map(m => m.clone());
                                     } else {
-                                        const newMaterial = child.material.clone();
-                                        newMaterial.shininess = this.renderSettings.shininess;
-                                        child.material = newMaterial;
+                                        child.userData.originalMaterial = child.material.clone();
                                     }
-                                } else {
-                                    child.material = new THREE.MeshPhongMaterial({ color: 0x667eea, shininess: this.renderSettings.shininess });
                                 }
                             }
                         });
                         resolve();
-                    }, (xhr) => {
-                        // 進行状況の表示 (オプション)
-                        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
-                    }, (error) => {
-                        reject(error);
-                    });
+                    }, undefined, (error) => reject(error));
                 });
             }
 
@@ -1387,32 +1250,29 @@
                 const center = box.getCenter(new THREE.Vector3());
                 const size = box.getSize(new THREE.Vector3());
                 
-                // Center the model
                 this.model.position.sub(center);
                 
-                // Scale to fit in view
                 const maxDim = Math.max(size.x, size.y, size.z);
-                const scale = 3 / maxDim; // 視点に合わせるスケールを調整
+                const scale = 3 / maxDim;
                 this.model.scale.setScalar(scale);
 
-                 // モデルが完全にカメラに収まるようにカメラの位置を調整
                 const fov = this.camera.fov * (Math.PI / 180);
-                const objectSize = size.length() * scale; // スケール適用後のオブジェクトサイズ
-                const distance = Math.abs(objectSize / 2 / Math.tan(fov / 2)) + 1; // オブジェクトから少し離す
-                this.camera.position.z = distance;
-                this.camera.lookAt(0, 0, 0); // モデルの中心を見る
+                const objectSize = size.length() * scale;
+                const distance = Math.abs(objectSize / 2 / Math.tan(fov / 2)) + 1;
+                
+                this.initialCameraPosition.set(0, 0, distance);
+                this.camera.position.copy(this.initialCameraPosition);
+                this.updateZoom(this.zoomFactor);
+                
+                this.camera.lookAt(0, 0, 0);
                 this.camera.updateProjectionMatrix();
             }
 
             animate() {
                 if (!this.renderer || !this.scene || !this.camera) return;
-                console.log("animate")
                 requestAnimationFrame(() => this.animate());
-                console.log(this.model)
-                // モデルがロードされていれば常に回転
-                if (this.model) { 
-                    this.model.rotation.y += 0.005;
-                }
+                
+                if (this.model) this.model.rotation.y += 0.005;
                 
                 this.renderer.render(this.scene, this.camera);
             }
@@ -1420,30 +1280,23 @@
             updateViewerBackground() {
                 const viewerContainer = document.getElementById('viewerContainer');
                 if (viewerContainer) {
-                    // カスタム設定の背景色と同じ色をビューアコンテナの背景にも設定
-                    // ただし、若干明るい色にして、ビューア内と外で区別できるようにする
                     const bgColor = new THREE.Color(this.renderSettings.bgColor);
-                    const lighterColor = bgColor.clone().lerp(new THREE.Color(0xffffff), 0.1); // 少し明るくする
+                    const lighterColor = bgColor.clone().lerp(new THREE.Color(0xffffff), 0.1);
                     viewerContainer.style.background = lighterColor.getStyle();
                 }
             }
-
-            // generateFrontImagePreview() 関数は削除されました
-
-
+            
             async generateImages() {
                 if (!this.model || (this.selectedAngles.length === 0 && this.customAngles.length === 0)) {
-                    this.showError('画像を生成するアングルを選択してください。');
+                    this.showError('Please select angles to generate images.');
                     return;
                 }
                 
-                this.isGeneratingImages = true; // 画像生成中フラグ
-                document.getElementById('generateBtn').disabled = true; // 生成ボタンを無効化
-                this.showStatus('画像を生成中...');
+                this.isGeneratingImages = true;
+                document.getElementById('generateBtn').disabled = true;
+                this.showStatus('Generating images...');
                 this.showProgress(0);
                 
-                // 画像生成を開始する前にcanvasは常に表示されているので、特別な処理は不要
-
                 const resolution = this.renderSettings.resolution;
                 const tempRenderer = new THREE.WebGLRenderer({
                     antialias: true,
@@ -1451,7 +1304,7 @@
                 });
                 tempRenderer.setSize(resolution, resolution);
                 tempRenderer.shadowMap.enabled = true;
-                tempRenderer.shadowMap.type = THREE.PCFSoftShadowMap; // 修正
+                tempRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
                 
                 const tempCamera = this.camera.clone();
                 tempCamera.aspect = 1;
@@ -1460,17 +1313,17 @@
                 this.generatedImages = [];
                 const allAnglesToGenerate = [...this.selectedAngles.map(angle => ({ type: 'predefined', value: angle })),
                                              ...this.customAngles.map(angle => ({ type: 'custom', value: angle }))];
-
+                
+                const originalRotation = this.model.rotation.clone();
+                this.model.rotation.set(0,0,0); // Stop animation rotation for capture
+                
                 for (let i = 0; i < allAnglesToGenerate.length; i++) {
                     const angleInfo = allAnglesToGenerate[i];
                     
-                    if (angleInfo.type === 'predefined') {
-                        this.setCameraPositionPredefined(tempCamera, angleInfo.value);
-                    } else if (angleInfo.type === 'custom') {
-                        this.setCameraPositionCustom(tempCamera, angleInfo.value);
-                    }
+                    tempRenderer.setClearColor(this.renderSettings.bgColor); // Set background for captures
+
+                    this.setCameraPosition(tempCamera, this.model, angleInfo);
                     
-                    // 現在のレンダリングスタイルをtempRendererにも適用
                     tempRenderer.render(this.scene, tempCamera);
                     const dataURL = tempRenderer.domElement.toDataURL('image/png');
                     
@@ -1478,7 +1331,7 @@
                     if (angleInfo.type === 'predefined') {
                         angleName = this.getAngleName(angleInfo.value);
                     } else {
-                        angleName = `カスタム_X${angleInfo.value.x}_Y${angleInfo.value.y}_Z${angleInfo.value.z}`;
+                        angleName = `Custom_X${angleInfo.value.x}_Y${angleInfo.value.y}_Z${angleInfo.value.z}`;
                     }
 
                     this.generatedImages.push({
@@ -1488,63 +1341,55 @@
                     });
                     
                     this.showProgress((i + 1) / allAnglesToGenerate.length * 100);
+                    await new Promise(res => setTimeout(res, 10)); // Give browser time to breathe
                 }
                 
+                this.model.rotation.copy(originalRotation); // Restore animation rotation
                 tempRenderer.dispose();
                 
                 this.displayGeneratedImages();
-                this.showSuccess(`${allAnglesToGenerate.length}枚の画像が生成されました！`);
+                this.showSuccess(`${allAnglesToGenerate.length} images generated successfully!`);
                 this.hideProgress();
-                this.isGeneratingImages = false; // 画像生成中フラグをリセット
-                document.getElementById('generateBtn').disabled = false; // 生成ボタンを有効化
+                this.isGeneratingImages = false;
+                document.getElementById('generateBtn').disabled = false;
             }
 
-            setCameraPositionPredefined(camera, angle) {
-                const box = new THREE.Box3().setFromObject(this.model);
-                const center = box.getCenter(new THREE.Vector3());
+            setCameraPosition(camera, model, angleInfo) {
+                const box = new THREE.Box3().setFromObject(model);
                 const size = box.getSize(new THREE.Vector3());
                 const maxDim = Math.max(size.x, size.y, size.z);
                 const fov = camera.fov * (Math.PI / 180);
-                const cameraDistance = Math.abs((maxDim * this.model.scale.x) / 2 / Math.tan(fov / 2)) * 1.2; // モデルのサイズに合わせて距離を調整
+                const cameraDistance = Math.abs(maxDim / 2 / Math.tan(fov / 2)) * 1.5;
 
                 const offset = new THREE.Vector3();
-                switch (angle) {
-                    case 'front': offset.set(0, 0, cameraDistance); break;
-                    case 'back': offset.set(0, 0, -cameraDistance); break;
-                    case 'left': offset.set(-cameraDistance, 0, 0); break;
-                    case 'right': offset.set(cameraDistance, 0, 0); break;
-                    case 'top': offset.set(0, cameraDistance, 0); break;
-                    case 'bottom': offset.set(0, -cameraDistance, 0); break;
-                    case 'iso1': offset.set(cameraDistance, cameraDistance, cameraDistance); break;
-                    case 'iso2': offset.set(-cameraDistance, cameraDistance, cameraDistance); break;
+
+                if (angleInfo.type === 'predefined') {
+                    switch (angleInfo.value) {
+                        case 'front':  offset.set(0, 0, 1); break;
+                        case 'back':   offset.set(0, 0, -1); break;
+                        case 'left':   offset.set(-1, 0, 0); break;
+                        case 'right':  offset.set(1, 0, 0); break;
+                        case 'top':    offset.set(0, 1, 0); camera.up.set(0, 0, -1); break;
+                        case 'bottom': offset.set(0, -1, 0); camera.up.set(0, 0, 1); break;
+                        case 'iso1':   offset.set(1, 1, 1); break;
+                        case 'iso2':   offset.set(-1, 1, 1); break;
+                    }
+                } else { // Custom
+                    const r = angleInfo.value;
+                    const phi = (90 - r.y) * (Math.PI / 180);
+                    const theta = (r.x) * (Math.PI / 180);
+                    offset.set(
+                        Math.sin(phi) * Math.sin(theta),
+                        Math.cos(phi),
+                        Math.sin(phi) * Math.cos(theta)
+                    );
                 }
                 
-                camera.position.copy(offset);
+                camera.position.copy(offset).multiplyScalar(cameraDistance);
                 camera.lookAt(0, 0, 0);
-                camera.updateMatrixWorld();
-            }
-
-            setCameraPositionCustom(camera, angle) {
-                const box = new THREE.Box3().setFromObject(this.model);
-                const center = box.getCenter(new THREE.Vector3());
-                const size = box.getSize(new THREE.Vector3());
-                const maxDim = Math.max(size.x, size.y, size.z);
-                const fov = camera.fov * (Math.PI / 180);
-                const cameraDistance = Math.abs((maxDim * this.model.scale.x) / 2 / Math.tan(fov / 2)) * 1.2; // モデルのサイズに合わせて距離を調整
-
-                // カメラを原点に配置
-                camera.position.set(0, 0, 0);
-                camera.rotation.set(0, 0, 0); // 回転をリセット
-
-                // 回転を適用 (度をラジアンに変換)
-                camera.rotation.x = angle.x * Math.PI / 180;
-                camera.rotation.y = angle.y * Math.PI / 180;
-                camera.rotation.z = angle.z * Math.PI / 180;
-
-                // モデルから適切な距離にカメラを移動 (逆回転を考慮)
-                camera.translateZ(cameraDistance); // Z軸に沿って後退
-
-                camera.lookAt(0, 0, 0); // モデルの中心を見る
+                if (angleInfo.value !== 'top' && angleInfo.value !== 'bottom') {
+                     camera.up.set(0, 1, 0);
+                }
                 camera.updateMatrixWorld();
             }
 
@@ -1560,7 +1405,7 @@
                     let angleName;
                     if (typeof image.angle === 'string') {
                         angleName = this.getAngleName(image.angle);
-                    } else { // カスタム角度の場合
+                    } else {
                         angleName = `X:${image.angle.x}° Y:${image.angle.y}° Z:${image.angle.z}°`;
                     }
                     
@@ -1568,7 +1413,7 @@
                         <img src="${image.dataURL}" alt="${angleName}">
                         <h3>${angleName}</h3>
                         <button class="btn download-btn" onclick="converter.downloadImage(${index})">
-                            💾 ダウンロード
+                            💾 Download
                         </button>
                     `;
                     
@@ -1576,7 +1421,7 @@
                 });
                 
                 if (this.generatedImages.length > 0) {
-                    document.getElementById('downloadAllBtn').style.display = 'block';
+                    document.getElementById('downloadAllBtn').style.display = 'flex';
                 } else {
                     document.getElementById('downloadAllBtn').style.display = 'none';
                 }
@@ -1584,14 +1429,8 @@
 
             getAngleName(angle) {
                 const names = {
-                    'front': '正面',
-                    'back': '背面',
-                    'left': '左側面',
-                    'right': '右側面',
-                    'top': '上面',
-                    'bottom': '底面',
-                    'iso1': 'アイソメ1',
-                    'iso2': 'アイソメ2'
+                    'front': 'Front', 'back': 'Back', 'left': 'Left', 'right': 'Right',
+                    'top': 'Top', 'bottom': 'Bottom', 'iso1': 'Isometric 1', 'iso2': 'Isometric 2'
                 };
                 return names[angle] || angle;
             }
@@ -1607,14 +1446,10 @@
             }
 
             async downloadAllImages() {
-                // Create zip file simulation with individual downloads
                 for (let i = 0; i < this.generatedImages.length; i++) {
-                    setTimeout(() => {
-                        this.downloadImage(i);
-                    }, i * 200); // Stagger downloads to avoid browser blocking
+                    setTimeout(() => this.downloadImage(i), i * 200);
                 }
-                
-                this.showSuccess('すべての画像のダウンロードを開始しました！');
+                this.showSuccess('Started downloading all images!');
             }
 
             showStatus(message) {
@@ -1648,10 +1483,8 @@
                 }, 1000);
             }
         }
-
-        // Initialize the converter
+        
         const converter = new Model3DConverter();
     </script>
-    
 </body>
 </html>
