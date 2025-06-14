@@ -1,0 +1,1643 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="A free online tool to convert 3D models (OBJ, STL, PLY, GLTF/GLB) into images from various angles. Customize rendering styles, camera angles, and output resolution easily.">
+    <title>3D Model to Images Converter</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/STLLoader.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/PLYLoader.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .container {
+            max-width: 1500px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.98);
+            backdrop-filter: blur(15px);
+            border-radius: 25px;
+            padding: 35px;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.15);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+            font-size: 2.8em;
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+            letter-spacing: 1px;
+        }
+
+        .main-content {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 40px;
+            align-items: start;
+        }
+
+        .left-panel {
+            min-height: 600px;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .right-panel {
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 20px;
+            padding: 30px;
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.1);
+            position: sticky;
+            top: 30px;
+            border: 1px solid rgba(230, 230, 230, 0.8);
+        }
+
+        .upload-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .upload-box {
+            border: 3px dashed #667eea;
+            border-radius: 20px;
+            padding: 50px;
+            background: rgba(102, 126, 234, 0.08);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 200px;
+        }
+
+        .upload-box:hover {
+            border-color: #764ba2;
+            background: rgba(118, 75, 162, 0.08);
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .upload-box::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.15), transparent);
+            transform: rotate(45deg);
+            transition: all 0.7s ease;
+            opacity: 0;
+        }
+
+        .upload-box:hover::before {
+            animation: shimmer 1.8s infinite;
+            opacity: 1;
+        }
+
+        @keyframes shimmer {
+            0% { transform: translateX(-100%) translateY(-100%) rotate(45deg); }
+            100% { transform: translateX(100%) translateY(100%) rotate(45deg); }
+        }
+
+        .upload-icon {
+            font-size: 3.5em;
+            color: #667eea;
+            margin-bottom: 20px;
+        }
+
+        .upload-text {
+            font-size: 1.3em;
+            color: #444;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .upload-hint {
+            font-size: 1em;
+            color: #777;
+            font-weight: 500;
+        }
+
+        #fileInput {
+            display: none;
+        }
+
+        .viewer-container {
+            background: #f0f2f5;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: inset 0 3px 15px rgba(0, 0, 0, 0.08);
+            display: none;
+            flex-grow: 1;
+        }
+
+        #viewer {
+            width: 100%;
+            height: 450px;
+            border-radius: 15px;
+            overflow: hidden;
+            background: #e9eff3;
+            position: relative;
+        }
+
+        .settings-section {
+            margin-bottom: 30px;
+        }
+
+        .settings-title {
+            font-size: 1.4em;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .style-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .style-option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 15px;
+            padding: 18px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: relative;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+        }
+
+        .style-option:hover {
+            border-color: #667eea;
+            transform: translateY(-3px);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .style-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.15);
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.3);
+        }
+
+        .style-option .icon {
+            font-size: 2.2em;
+            margin-bottom: 10px;
+        }
+
+        .style-option .name {
+            font-weight: 700;
+            color: #333;
+            margin-bottom: 5px;
+            font-size: 1.1em;
+        }
+
+        .style-option .description {
+            font-size: 0.85em;
+            color: #666;
+        }
+
+        .custom-settings {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(248, 249, 250, 0.9);
+            border-radius: 15px;
+            border: 1px solid #e0e0e0;
+        }
+
+        .custom-settings.show {
+            display: block;
+        }
+
+        .setting-group {
+            margin-bottom: 20px;
+        }
+
+        .setting-label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555;
+            font-weight: 600;
+            font-size: 0.95em;
+        }
+
+        .setting-input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .setting-input:focus {
+            border-color: #667eea;
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+        }
+
+        .color-input {
+            width: 100%;
+            height: 45px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            cursor: pointer;
+            -webkit-appearance: none;
+            appearance: none;
+            padding: 0;
+            background: transparent;
+        }
+
+        .color-input::-webkit-color-swatch-wrapper {
+            padding: 0;
+        }
+        .color-input::-webkit-color-swatch {
+            border: none;
+            border-radius: 7px;
+        }
+        .color-input::-moz-color-swatch {
+            border: none;
+            border-radius: 7px;
+        }
+
+        .slider-group {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .slider-input {
+            flex: 1;
+            -webkit-appearance: none;
+            appearance: none;
+            height: 8px;
+            background: #e0e0e0;
+            border-radius: 5px;
+            outline: none;
+            transition: background 0.3s ease;
+        }
+
+        .slider-input::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            appearance: none;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .slider-input::-moz-range-thumb {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: #667eea;
+            cursor: pointer;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+            transition: background 0.3s ease;
+        }
+
+        .slider-value {
+            min-width: 50px;
+            text-align: right;
+            font-weight: 700;
+            color: #667eea;
+            font-size: 1em;
+        }
+
+        .angles-section {
+            margin-bottom: 30px;
+        }
+
+        .angle-options {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(90px, 1fr));
+            gap: 10px;
+        }
+
+        .angle-option {
+            background: white;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.95em;
+            font-weight: 500;
+            color: #555;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+        }
+
+        .angle-option:hover {
+            border-color: #667eea;
+            transform: translateY(-2px);
+        }
+
+        .angle-option.selected {
+            border-color: #667eea;
+            background: rgba(102, 126, 234, 0.15);
+            color: #667eea;
+            font-weight: 700;
+            box-shadow: 0 0 0 2px rgba(102, 126, 234, 0.2);
+        }
+
+        .custom-angles-section {
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px dashed #e0e0e0;
+        }
+
+        .angle-input-group {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .angle-input-group label {
+            min-width: 30px;
+            font-weight: 600;
+            color: #555;
+        }
+
+        .angle-input-group input[type="number"] {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            font-size: 1em;
+            text-align: center;
+        }
+
+        .btn {
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            color: white;
+            border: none;
+            padding: 14px 28px;
+            border-radius: 30px;
+            font-size: 1.05em;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            margin: 5px 0;
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.3);
+            width: 100%;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 12px 30px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn:active {
+            transform: translateY(0);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.2);
+        }
+
+        .btn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: none;
+        }
+
+        .btn.generate-btn {
+            background: linear-gradient(45deg, #28a745, #20c997);
+            font-size: 1.2em;
+            padding: 18px 28px;
+            margin-top: 25px;
+            box-shadow: 0 10px 25px rgba(40, 167, 69, 0.3);
+        }
+
+        .btn.generate-btn:hover {
+            box-shadow: 0 15px 35px rgba(40, 167, 69, 0.4);
+        }
+
+        .images-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 25px;
+            margin-top: 35px;
+        }
+
+        .image-item {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .image-item:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0, 0, 0, 0.15);
+        }
+
+        .image-item img {
+            width: 100%;
+            height: 220px;
+            object-fit: contain;
+            border-radius: 15px;
+            background: #f8f9fa;
+            margin-bottom: 20px;
+            border: 1px solid #eee;
+        }
+
+        .image-item h3 {
+            text-align: center;
+            margin-bottom: 18px;
+            color: #333;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .download-btn {
+            width: calc(100% - 20px);
+            background: linear-gradient(45deg, #667eea, #764ba2);
+            font-size: 0.95em;
+            padding: 10px 20px;
+            margin-top: 0;
+        }
+        .download-btn:hover {
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .download-all-btn {
+            background: linear-gradient(45deg, #ffc107, #ff8c00);
+            margin-top: 25px;
+            box-shadow: 0 10px 25px rgba(255, 193, 7, 0.3);
+        }
+
+        .download-all-btn:hover {
+            box-shadow: 0 15px 35px rgba(255, 193, 7, 0.4);
+        }
+
+        .progress-bar {
+            width: 100%;
+            height: 8px;
+            background: #e9ecef;
+            border-radius: 4px;
+            overflow: hidden;
+            margin: 25px 0;
+            display: none;
+            box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.1);
+        }
+
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #667eea, #764ba2);
+            border-radius: 4px;
+            transition: width 0.4s ease;
+            width: 0%;
+        }
+
+        .status {
+            text-align: center;
+            margin: 25px 0;
+            font-weight: 600;
+            color: #555;
+            padding: 18px;
+            border-radius: 15px;
+            font-size: 1.05em;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+
+        .error {
+            color: #dc3545;
+            background: rgba(220, 53, 69, 0.1);
+            border-left: 5px solid #dc3545;
+        }
+
+        .success {
+            color: #28a745;
+            background: rgba(40, 167, 69, 0.1);
+            border-left: 5px solid #28a745;
+        }
+
+        @media (max-width: 1200px) {
+            .main-content {
+                grid-template-columns: 1fr;
+            }
+
+            .right-panel {
+                position: static;
+                margin-top: 30px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 25px;
+                margin: 15px;
+            }
+
+            h1 {
+                font-size: 2.2em;
+            }
+
+            .upload-box {
+                padding: 30px;
+            }
+
+            .upload-icon {
+                font-size: 3em;
+            }
+
+            .upload-text {
+                font-size: 1.1em;
+            }
+
+            .viewer-container {
+                padding: 15px;
+            }
+
+            #viewer {
+                height: 350px;
+            }
+
+            .settings-title {
+                font-size: 1.2em;
+            }
+
+            .style-options, .angle-options {
+                grid-template-columns: 1fr;
+            }
+
+            .images-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .btn {
+                padding: 12px 20px;
+                font-size: 0.95em;
+            }
+
+            .btn.generate-btn {
+                font-size: 1em;
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🎨 3D Model to Images Converter</h1>
+        
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="upload-section">
+                    <div class="upload-box" onclick="document.getElementById('fileInput').click()">
+                        <div class="upload-icon">📁</div>
+                        <div class="upload-text">Upload 3D Model File</div>
+                        <div class="upload-hint">Supported formats: OBJ, STL, PLY, GLTF/GLB (Max 50MB)</div>
+                    </div>
+                    <input type="file" id="fileInput" accept=".obj,.stl,.ply,.gltf,.glb" />
+                </div>
+
+                <div class="viewer-container" id="viewerContainer">
+                    <div id="viewer"></div>
+                </div>
+
+                <div class="progress-bar" id="progressBar">
+                    <div class="progress-fill" id="progressFill"></div>
+                </div>
+
+                <div class="status" id="status"></div>
+
+                <div class="images-grid" id="imagesGrid"></div>
+            </div>
+
+            <div class="right-panel">
+                <div class="settings-section">
+                    <div class="settings-title">
+                        🎨 Rendering Style
+                    </div>
+                    <div class="style-options">
+                        <div class="style-option selected" data-style="realistic">
+                            <div class="icon">🌟</div>
+                            <div class="name">Realistic</div>
+                            <div class="description">Photorealistic texture</div>
+                        </div>
+                        <div class="style-option" data-style="sketch">
+                            <div class="icon">✏️</div>
+                            <div class="name">Sketch</div>
+                            <div class="description">Pencil drawing style</div>
+                        </div>
+                        <div class="style-option" data-style="wireframe">
+                            <div class="icon">🔗</div>
+                            <div class="name">Wireframe</div>
+                            <div class="description">Structure lines only</div>
+                        </div>
+                        <div class="style-option" data-style="toon">
+                            <div class="icon">🎭</div>
+                            <div class="name">Toon Shading</div>
+                            <div class="description">Anime style</div>
+                        </div>
+                        <div class="style-option" data-style="clay">
+                            <div class="icon">🏺</div>
+                            <div class="name">Clay</div>
+                            <div class="description">Clay texture</div>
+                        </div>
+                        <div class="style-option" data-style="custom">
+                            <div class="icon">⚙️</div>
+                            <div class="name">Custom</div>
+                            <div class="description">Advanced settings</div>
+                        </div>
+                    </div>
+
+                    <div class="custom-settings" id="customSettings">
+                        <div class="setting-group">
+                            <label class="setting-label">Background Color</label>
+                            <input type="color" class="color-input" id="bgColor" value="#f8f9fa">
+                        </div>
+                        <div class="setting-group">
+                            <label class="setting-label">Light Intensity</label>
+                            <div class="slider-group">
+                                <input type="range" class="slider-input" id="lightIntensity" min="0.1" max="2" step="0.1" value="0.8">
+                                <span class="slider-value" id="lightValue">0.8</span>
+                            </div>
+                        </div>
+                        <div class="setting-group">
+                            <label class="setting-label">Shadow Intensity</label>
+                            <div class="slider-group">
+                                <input type="range" class="slider-input" id="shadowIntensity" min="0" max="1" step="0.1" value="0.3">
+                                <span class="slider-value" id="shadowValue">0.3</span>
+                            </div>
+                        </div>
+                        <div class="setting-group">
+                            <label class="setting-label">Material Shininess</label>
+                            <div class="slider-group">
+                                <input type="range" class="slider-input" id="shininess" min="0" max="200" step="10" value="100">
+                                <span class="slider-value" id="shininessValue">100</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="angles-section">
+                    <div class="settings-title">
+                        📐 Camera Angles
+                    </div>
+                    <div class="angle-options">
+                        <div class="angle-option selected" data-angle="front">Front</div>
+                        <div class="angle-option selected" data-angle="back">Back</div>
+                        <div class="angle-option selected" data-angle="left">Left</div>
+                        <div class="angle-option selected" data-angle="right">Right</div>
+                        <div class="angle-option selected" data-angle="top">Top</div>
+                        <div class="angle-option" data-angle="bottom">Bottom</div>
+                        <div class="angle-option" data-angle="iso1">Isometric 1</div>
+                        <div class="angle-option" data-angle="iso2">Isometric 2</div>
+                    </div>
+
+                    <div class="custom-angles-section">
+                        <div class="settings-title">
+                            🔄 Custom Angles (degrees)
+                        </div>
+                        <div class="angle-input-group">
+                            <label for="rotateX">X:</label>
+                            <input type="number" id="rotateX" class="setting-input" value="0" min="-360" max="360" step="10">
+                        </div>
+                        <div class="angle-input-group">
+                            <label for="rotateY">Y:</label>
+                            <input type="number" id="rotateY" class="setting-input" value="0" min="-360" max="360" step="10">
+                        </div>
+                        <div class="angle-input-group">
+                            <label for="rotateZ">Z:</label>
+                            <input type="number" id="rotateZ" class="setting-input" value="0" min="-360" max="360" step="10">
+                        </div>
+                         <button class="btn" id="addCustomAngleBtn">
+                            ➕ Add Custom Angle
+                        </button>
+                    </div>
+                </div>
+
+                <div class="settings-section">
+                    <div class="settings-title">
+                        🖼️ Output Settings
+                    </div>
+                    <div class="setting-group">
+                        <label class="setting-label">Resolution</label>
+                        <select class="setting-input" id="resolution">
+                            <option value="512">512×512</option>
+                            <option value="1024" selected>1024×1024</option>
+                            <option value="2048">2048×2048</option>
+                            <option value="4096">4096×4096</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button class="btn generate-btn" id="generateBtn" disabled>
+                    📸 Generate Images
+                </button>
+
+                <button class="btn download-all-btn" id="downloadAllBtn" style="display: none;">
+                    📦 Download All
+                </button>
+            </div>
+        </div>
+        <footer>
+        <p>&copy; 2025 KENTA TAKAHASHI. All Rights Reserved.</p>
+        <p>Powered by <a href="https://threejs.org/" target="_blank">Three.js</a> (MIT Licensed).</p>
+        <p><a href="/LICENSE" target="_blank">View license information</a></p>
+        <p><a href="/terms-of-use.html">Terms of Use</a> | <a href="/privacy-policy.html">Privacy Policy</a></p>
+    </footer>
+    </div>
+
+    <script>
+        class Model3DConverter {
+            constructor() {
+                this.scene = null;
+                this.camera = null;
+                this.renderer = null;
+                this.model = null;
+                this.generatedImages = [];
+                this.selectedStyle = 'realistic';
+                this.selectedAngles = ['front', 'back', 'left', 'right', 'top'];
+                // カスタム角度を保存する配列
+                this.customAngles = []; 
+                this.renderSettings = {
+                    bgColor: '#f8f9fa',
+                    lightIntensity: 0.8,
+                    shadowIntensity: 0.3,
+                    shininess: 100,
+                    resolution: 1024
+                };
+                this.init();
+            }
+
+            init() {
+                this.setupEventListeners();
+                this.updateViewerBackground(); // 初期背景色を設定
+            }
+
+            setupEventListeners() {
+                // ファイルアップロード
+                document.getElementById('fileInput').addEventListener('change', (e) => {
+                    this.handleFileUpload(e);
+                });
+
+                // スタイル選択
+                document.querySelectorAll('.style-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        this.selectStyle(option.dataset.style);
+                    });
+                });
+
+                // アングル選択
+                document.querySelectorAll('.angle-option').forEach(option => {
+                    option.addEventListener('click', () => {
+                        this.toggleAngle(option.dataset.angle, option);
+                    });
+                });
+
+                // カスタム角度追加ボタン
+                document.getElementById('addCustomAngleBtn').addEventListener('click', () => {
+                    this.addCustomAngle();
+                });
+
+                // カスタム設定
+                document.getElementById('bgColor').addEventListener('change', (e) => {
+                    this.renderSettings.bgColor = e.target.value;
+                    this.updateScene();
+                    this.updateViewerBackground(); // ビューアの背景色も更新
+                });
+
+                document.getElementById('lightIntensity').addEventListener('input', (e) => {
+                    this.renderSettings.lightIntensity = parseFloat(e.target.value);
+                    document.getElementById('lightValue').textContent = e.target.value;
+                    this.updateScene();
+                });
+
+                document.getElementById('shadowIntensity').addEventListener('input', (e) => {
+                    this.renderSettings.shadowIntensity = parseFloat(e.target.value);
+                    document.getElementById('shadowValue').textContent = e.target.value;
+                    this.updateScene();
+                });
+
+                document.getElementById('shininess').addEventListener('input', (e) => {
+                    this.renderSettings.shininess = parseInt(e.target.value);
+                    document.getElementById('shininessValue').textContent = e.target.value;
+                    this.updateScene();
+                });
+
+                // 解像度設定
+                document.getElementById('resolution').addEventListener('change', (e) => {
+                    this.renderSettings.resolution = parseInt(e.target.value);
+                });
+
+                // 生成ボタン
+                document.getElementById('generateBtn').addEventListener('click', () => {
+                    this.generateImages();
+                });
+
+                // 全ダウンロードボタン
+                document.getElementById('downloadAllBtn').addEventListener('click', () => {
+                    this.downloadAllImages();
+                });
+            }
+
+            selectStyle(style) {
+                document.querySelectorAll('.style-option').forEach(option => {
+                    option.classList.remove('selected');
+                });
+                document.querySelector(`[data-style="${style}"]`).classList.add('selected');
+                
+                this.selectedStyle = style;
+                
+                const customSettings = document.getElementById('customSettings');
+                if (style === 'custom') {
+                    customSettings.classList.add('show');
+                } else {
+                    customSettings.classList.remove('show');
+                }
+
+                this.updateMaterialStyle();
+            }
+
+            toggleAngle(angle, element) {
+                // カスタム角度の追加ボタンによって生成された要素を識別するためのカスタムデータ属性を追加
+                const isCustomAngleElement = element.dataset.customAngle === 'true';
+
+                if (isCustomAngleElement) {
+                    // カスタム角度の場合、選択状態を切り替える
+                    element.classList.toggle('selected');
+                    const angleValue = JSON.parse(element.dataset.angleValue); // JSON文字列をパース
+                    if (element.classList.contains('selected')) {
+                        this.customAngles.push(angleValue);
+                    } else {
+                        this.customAngles = this.customAngles.filter(a => JSON.stringify(a) !== JSON.stringify(angleValue));
+                    }
+                } else {
+                    // 事前定義された角度の場合
+                    element.classList.toggle('selected');
+                    if (element.classList.contains('selected')) {
+                        if (!this.selectedAngles.includes(angle)) {
+                            this.selectedAngles.push(angle);
+                        }
+                    } else {
+                        this.selectedAngles = this.selectedAngles.filter(a => a !== angle);
+                    }
+                }
+            }
+
+            addCustomAngle() {
+                const rotateX = parseFloat(document.getElementById('rotateX').value);
+                const rotateY = parseFloat(document.getElementById('rotateY').value);
+                const rotateZ = parseFloat(document.getElementById('rotateZ').value);
+
+                if (isNaN(rotateX) || isNaN(rotateY) || isNaN(rotateZ)) {
+                    this.showError('Please enter valid angles.');
+                    return;
+                }
+
+                const newAngle = { x: rotateX, y: rotateY, z: rotateZ };
+                
+                // 既に存在するカスタム角度かチェック
+                const exists = this.customAngles.some(angle => 
+                    angle.x === newAngle.x && angle.y === newAngle.y && angle.z === newAngle.z
+                );
+
+                if (exists) {
+                    this.showError('This custom angle already exists.');
+                    return;
+                }
+
+                this.customAngles.push(newAngle);
+                this.renderCustomAngles();
+                this.showSuccess('Custom angle added successfully!');
+                
+                // 新しく追加されたカスタム角度オプションを選択状態にする
+                const newOption = document.querySelector(`.angle-option[data-angle-value='${JSON.stringify(newAngle)}']`);
+                if (newOption && !newOption.classList.contains('selected')) {
+                    newOption.classList.add('selected');
+                }
+            }
+
+            renderCustomAngles() {
+                const angleOptionsContainer = document.querySelector('.angle-options');
+                // 事前定義された角度オプションを再描画しないように、カスタム角度のみを削除
+                const existingCustomAngles = angleOptionsContainer.querySelectorAll('[data-custom-angle="true"]');
+                existingCustomAngles.forEach(el => el.remove());
+
+                this.customAngles.forEach(angle => {
+                    const angleOption = document.createElement('div');
+                    angleOption.className = 'angle-option selected'; // 追加されたらデフォルトで選択
+                    angleOption.dataset.customAngle = 'true'; // カスタム角度であることを示す
+                    angleOption.dataset.angleValue = JSON.stringify(angle); // 角度の値をJSON文字列として保存
+                    angleOption.textContent = `X:${angle.x}° Y:${angle.y}° Z:${angle.z}°`;
+                    angleOption.addEventListener('click', () => {
+                        this.toggleAngle(null, angleOption); // angleは使用しないのでnull
+                    });
+                    angleOptionsContainer.appendChild(angleOption);
+                });
+            }
+
+
+            async handleFileUpload(event) {
+                const file = event.target.files[0];
+                if (!file) return;
+
+                if (file.size > 50 * 1024 * 1024) {
+                    this.showError('File size exceeds 50MB.');
+                    return;
+                }
+
+                this.showStatus('Loading file...');
+                this.generatedImages = []; // 新しいファイルがアップロードされたら既存の画像をクリア
+                document.getElementById('imagesGrid').innerHTML = ''; // グリッドもクリア
+                document.getElementById('downloadAllBtn').style.display = 'none'; // ダウンロードボタンを非表示に
+
+                // --- 修正箇所 START ---
+                // モデルを読み込む前にビューアコンテナを表示状態にする
+                // これにより、レンダラーが正しいサイズで初期化される
+                document.getElementById('viewerContainer').style.display = 'block';
+
+                try {
+                    const arrayBuffer = await file.arrayBuffer();
+                    await this.loadModel(arrayBuffer, file.name); // モデルを読み込む
+                    
+                    this.showSuccess('3D model loaded successfully!');
+                    document.getElementById('generateBtn').disabled = false;
+                    
+                    // 以前はここに表示切り替えのコードがあったが、上に移動したため不要
+
+                } catch (error) {
+                    this.showError('Failed to load file: ' + error.message);
+                    // エラーが発生した場合は、ビューアを再度非表示にする
+                    document.getElementById('viewerContainer').style.display = 'none';
+                    document.getElementById('generateBtn').disabled = true;
+                }
+                // --- 修正箇所 END ---
+            }
+
+            async loadModel(arrayBuffer, filename) {
+                this.setupScene();
+                
+                const extension = filename.split('.').pop().toLowerCase();
+                
+                // 既存のモデルがあれば削除
+                if (this.model) {
+                    this.scene.remove(this.model);
+                    this.model.traverse((child) => {
+                        if (child.isMesh) {
+                            if (child.geometry) {
+                                child.geometry.dispose();
+                            }
+                            if (child.material) {
+                                if (Array.isArray(child.material)) {
+                                    child.material.forEach(m => m.dispose());
+                                } else {
+                                    child.material.dispose();
+                                }
+                            }
+                        }
+                    });
+                    this.model = null;
+                }
+
+                if (extension === 'obj') {
+                    await this.loadOBJ(arrayBuffer);
+                } else if (extension === 'stl') {
+                    await this.loadSTL(arrayBuffer);
+                } else if (extension === 'ply') {
+                    await this.loadPLY(arrayBuffer);
+                } else if (extension === 'gltf' || extension === 'glb') {
+                    await this.loadGLTF(arrayBuffer);
+                }
+                else {
+                    throw new Error('Unsupported file format.');
+                }
+
+                this.centerAndScaleModel();
+                this.updateMaterialStyle();
+                this.animate();
+            }
+
+            setupScene() {
+                const container = document.getElementById('viewer');
+                const width = container.clientWidth;
+                const height = container.clientHeight;
+
+                // Scene
+                this.scene = new THREE.Scene();
+                this.scene.background = new THREE.Color(this.renderSettings.bgColor);
+
+                // Camera
+                this.camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+                this.camera.position.set(5, 5, 5);
+                this.camera.lookAt(0, 0, 0);
+
+                // Renderer
+                this.renderer = new THREE.WebGLRenderer({ 
+                    antialias: true,
+                    preserveDrawingBuffer: true
+                });
+                this.renderer.setSize(width, height);
+                this.renderer.shadowMap.enabled = true;
+                this.renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                
+                // Clear existing canvas if any
+                const existingCanvas = container.querySelector('canvas');
+                if (existingCanvas) {
+                    container.removeChild(existingCanvas);
+                }
+                container.appendChild(this.renderer.domElement);
+
+                this.setupLighting();
+            }
+
+            setupLighting() {
+                // Clear existing lights
+                const lights = this.scene.children.filter(child => child.isLight);
+                lights.forEach(light => this.scene.remove(light));
+
+                // Ambient light
+                const ambientLight = new THREE.AmbientLight(0x404040, 0.4);
+                this.scene.add(ambientLight);
+
+                // Main directional light
+                const directionalLight = new THREE.DirectionalLight(0xffffff, this.renderSettings.lightIntensity);
+                directionalLight.position.set(10, 10, 5);
+                directionalLight.castShadow = true;
+                directionalLight.shadow.mapSize.width = 2048;
+                directionalLight.shadow.mapSize.height = 2048;
+                directionalLight.shadow.camera.near = 0.5;
+                directionalLight.shadow.camera.far = 50;
+                directionalLight.shadow.camera.left = -10;
+                directionalLight.shadow.camera.right = 10;
+                directionalLight.shadow.camera.top = 10;
+                directionalLight.shadow.camera.bottom = -10;
+                this.scene.add(directionalLight);
+
+                // Fill light
+                const fillLight = new THREE.DirectionalLight(0xffffff, this.renderSettings.lightIntensity * 0.3);
+                fillLight.position.set(-5, 5, -5);
+                this.scene.add(fillLight);
+
+                // Rim light
+                const rimLight = new THREE.DirectionalLight(0xffffff, this.renderSettings.lightIntensity * 0.2);
+                rimLight.position.set(0, -10, 10);
+                this.scene.add(rimLight);
+            }
+
+            updateScene() {
+                if (!this.scene) return;
+                this.scene.background = new THREE.Color(this.renderSettings.bgColor);
+                this.setupLighting();
+                this.updateMaterialStyle();
+            }
+
+            updateMaterialStyle() {
+                if (!this.model) return;
+                let material;
+                
+                switch (this.selectedStyle) {
+                    case 'realistic':
+                        material = new THREE.MeshPhongMaterial({
+                            color: 0x667eea,
+                            shininess: this.renderSettings.shininess, // カスタム設定を適用
+                            specular: 0x333333
+                        });
+                        break;
+                        
+                    case 'sketch':
+                        material = new THREE.MeshLambertMaterial({
+                            color: 0x333333,
+                            wireframe: false
+                        });
+                        break;
+                        
+                    case 'wireframe':
+                        material = new THREE.MeshBasicMaterial({
+                            color: 0x333333,
+                            wireframe: true,
+                            wireframeLinewidth: 2
+                        });
+                        break;
+                        
+                    case 'toon':
+                        material = new THREE.MeshToonMaterial({
+                            color: 0x667eea,
+                            gradientMap: this.createToonGradient()
+                        });
+                        break;
+                        
+                    case 'clay':
+                        material = new THREE.MeshLambertMaterial({
+                            color: 0xd4af37,
+                            flatShading: false
+                        });
+                        break;
+                        
+                    case 'custom':
+                        material = new THREE.MeshPhongMaterial({
+                            color: 0x667eea,
+                            shininess: this.renderSettings.shininess,
+                            specular: 0x333333
+                        });
+                        break;
+                        
+                    default:
+                        material = new THREE.MeshPhongMaterial({
+                            color: 0x667eea,
+                            shininess: 100
+                        });
+                }
+
+                // モデルの既存の材質を解放してから新しい材質を適用
+                this.model.traverse((child) => {
+                    if (child.isMesh) {
+                        if (Array.isArray(child.material)) {
+                            child.material.forEach(m => m.dispose());
+                        } else if (child.material) { // materialがnullでないことを確認
+                            child.material.dispose();
+                        }
+                        child.material = material;
+                    }
+                });
+            }
+
+            createToonGradient() {
+                const canvas = document.createElement('canvas');
+                canvas.width = 4;
+                canvas.height = 1;
+                
+                const context = canvas.getContext('2d');
+                const gradient = context.createLinearGradient(0, 0, canvas.width, 0);
+                gradient.addColorStop(0, '#000000');
+                gradient.addColorStop(0.4, '#444444');
+                gradient.addColorStop(0.8, '#888888');
+                gradient.addColorStop(1, '#ffffff');
+                
+                context.fillStyle = gradient;
+                context.fillRect(0, 0, canvas.width, canvas.height);
+                
+                const texture = new THREE.CanvasTexture(canvas);
+                texture.minFilter = THREE.NearestFilter;
+                texture.magFilter = THREE.NearestFilter;
+                
+                return texture;
+            }
+
+           async loadOBJ(arrayBuffer) {
+                const text = new TextDecoder().decode(arrayBuffer);
+                const geometry = new THREE.BufferGeometry();
+                
+                const vertices = [];
+                const normals = [];
+                const uvs = [];
+                const faces = [];
+                
+                const lines = text.split('\n');
+                
+                for (let line of lines) {
+                    line = line.trim();
+                    if (line.startsWith('v ')) {
+                        const parts = line.split(/\s+/);
+                        vertices.push(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+                    } else if (line.startsWith('vn ')) {
+                        const parts = line.split(/\s+/);
+                        normals.push(parseFloat(parts[1]), parseFloat(parts[2]), parseFloat(parts[3]));
+                    } else if (line.startsWith('vt ')) {
+                        const parts = line.split(/\s+/);
+                        uvs.push(parseFloat(parts[1]), parseFloat(parts[2]));
+                    } else if (line.startsWith('f ')) {
+                        const parts = line.split(/\s+/).slice(1);
+                        for (let i = 1; i < parts.length - 1; i++) {
+                            faces.push(parts[0], parts[i], parts[i + 1]);
+                        }
+                    }
+                }
+                
+                const positionArray = [];
+                const normalArray = [];
+                const uvArray = [];
+                
+                for (let face of faces) {
+                    const indices = face.split('/');
+                    const vertexIndex = parseInt(indices[0]) - 1;
+                    const uvIndex = indices[1] ? parseInt(indices[1]) - 1 : -1;
+                    const normalIndex = indices[2] ? parseInt(indices[2]) - 1 : -1;
+                    
+                    positionArray.push(
+                        vertices[vertexIndex * 3],
+                        vertices[vertexIndex * 3 + 1],
+                        vertices[vertexIndex * 3 + 2]
+                    );
+                    
+                    if (uvIndex >= 0) {
+                        uvArray.push(uvs[uvIndex * 2], uvs[uvIndex * 2 + 1]);
+                    }
+                    
+                    if (normalIndex >= 0) {
+                        normalArray.push(
+                            normals[normalIndex * 3],
+                            normals[normalIndex * 3 + 1],
+                            normals[normalIndex * 3 + 2]
+                        );
+                    }
+                }
+                
+                geometry.setAttribute('position', new THREE.Float32BufferAttribute(positionArray, 3));
+                if (normalArray.length > 0) {
+                    geometry.setAttribute('normal', new THREE.Float32BufferAttribute(normalArray, 3));
+                } else {
+                    geometry.computeVertexNormals();
+                }
+                if (uvArray.length > 0) {
+                    geometry.setAttribute('uv', new THREE.Float32BufferAttribute(uvArray, 2));
+                }
+                
+                const material = new THREE.MeshPhongMaterial({ color: 0x667eea });
+                this.model = new THREE.Mesh(geometry, material);
+                this.scene.add(this.model);
+            }
+
+            async loadSTL(arrayBuffer) {
+                // Three.jsのSTLLoaderを使用する
+                return new Promise((resolve, reject) => {
+                    const loader = new THREE.STLLoader();
+                    loader.parse(arrayBuffer, (geometry) => {
+                        geometry.computeVertexNormals();
+                        const material = new THREE.MeshPhongMaterial({ color: 0x667eea });
+                        this.model = new THREE.Mesh(geometry, material);
+                        this.scene.add(this.model);
+                        resolve();
+                    }, undefined, (error) => {
+                        reject(error);
+                    });
+                });
+            }
+
+            async loadPLY(arrayBuffer) {
+                // Three.jsのPLYLoaderを使用する
+                return new Promise((resolve, reject) => {
+                    const loader = new THREE.PLYLoader();
+                    loader.parse(arrayBuffer, (geometry) => {
+                        geometry.computeVertexNormals();
+                        const material = new THREE.MeshPhongMaterial({ color: 0x667eea });
+                        this.model = new THREE.Mesh(geometry, material);
+                        this.scene.add(this.model);
+                        resolve();
+                    }, undefined, (error) => {
+                        reject(error);
+                    });
+                });
+            }
+
+            async loadGLTF(arrayBuffer) {
+                // Three.jsのGLTFLoaderを使用する
+                return new Promise((resolve, reject) => {
+                    const loader = new THREE.GLTFLoader();
+                    loader.parse(arrayBuffer, '', (gltf) => {
+                        this.model = gltf.scene;
+                        this.scene.add(this.model);
+
+                        // モデル内のすべてのメッシュに影のプロパティを設定
+                        this.model.traverse((child) => {
+                            if (child.isMesh) {
+                                child.castShadow = true;
+                                child.receiveShadow = true;
+                                // 既存の材質がある場合は、その材質のコピーを作成し、光沢などを維持する
+                                if (child.material) {
+                                    if (Array.isArray(child.material)) {
+                                        child.material = child.material.map(m => {
+                                            const newMaterial = m.clone();
+                                            newMaterial.shininess = this.renderSettings.shininess;
+                                            return newMaterial;
+                                        });
+                                    } else {
+                                        const newMaterial = child.material.clone();
+                                        newMaterial.shininess = this.renderSettings.shininess;
+                                        child.material = newMaterial;
+                                    }
+                                } else {
+                                    child.material = new THREE.MeshPhongMaterial({ color: 0x667eea, shininess: this.renderSettings.shininess });
+                                }
+                            }
+                        });
+                        resolve();
+                    }, (xhr) => {
+                        // 進行状況の表示 (オプション)
+                        console.log((xhr.loaded / xhr.total * 100) + '% loaded');
+                    }, (error) => {
+                        reject(error);
+                    });
+                });
+            }
+
+            centerAndScaleModel() {
+                if (!this.model) return;
+                
+                const box = new THREE.Box3().setFromObject(this.model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                
+                // Center the model
+                this.model.position.sub(center);
+                
+                // Scale to fit in view
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const scale = 3 / maxDim; // 視点に合わせるスケールを調整
+                this.model.scale.setScalar(scale);
+
+                 // モデルが完全にカメラに収まるようにカメラの位置を調整
+                const fov = this.camera.fov * (Math.PI / 180);
+                const objectSize = size.length() * scale; // スケール適用後のオブジェクトサイズ
+                const distance = Math.abs(objectSize / 2 / Math.tan(fov / 2)) + 1; // オブジェクトから少し離す
+                this.camera.position.z = distance;
+                this.camera.lookAt(0, 0, 0); // モデルの中心を見る
+                this.camera.updateProjectionMatrix();
+            }
+
+            animate() {
+                if (!this.renderer || !this.scene || !this.camera) return;
+                requestAnimationFrame(() => this.animate());
+                
+                // モデルがロードされていれば常に回転
+                if (this.model) { 
+                    this.model.rotation.y += 0.005;
+                }
+                
+                this.renderer.render(this.scene, this.camera);
+            }
+
+            updateViewerBackground() {
+                const viewerContainer = document.getElementById('viewerContainer');
+                if (viewerContainer) {
+                    // カスタム設定の背景色と同じ色をビューアコンテナの背景にも設定
+                    // ただし、若干明るい色にして、ビューア内と外で区別できるようにする
+                    const bgColor = new THREE.Color(this.renderSettings.bgColor);
+                    const lighterColor = bgColor.clone().lerp(new THREE.Color(0xffffff), 0.1); // 少し明るくする
+                    viewerContainer.style.background = lighterColor.getStyle();
+                }
+            }
+
+
+            async generateImages() {
+                if (!this.model || (this.selectedAngles.length === 0 && this.customAngles.length === 0)) {
+                    this.showError('Please select angles to generate images.');
+                    return;
+                }
+                
+                this.isGeneratingImages = true;
+                document.getElementById('generateBtn').disabled = true;
+                this.showStatus('Generating images...');
+                this.showProgress(0);
+                
+
+                const resolution = this.renderSettings.resolution;
+                const tempRenderer = new THREE.WebGLRenderer({
+                    antialias: true,
+                    preserveDrawingBuffer: true
+                });
+                tempRenderer.setSize(resolution, resolution);
+                tempRenderer.shadowMap.enabled = true;
+                tempRenderer.shadowMap.type = THREE.PCFSoftShadowMap;
+                
+                const tempCamera = this.camera.clone();
+                tempCamera.aspect = 1;
+                tempCamera.updateProjectionMatrix();
+                
+                this.generatedImages = [];
+                const allAnglesToGenerate = [...this.selectedAngles.map(angle => ({ type: 'predefined', value: angle })),
+                                             ...this.customAngles.map(angle => ({ type: 'custom', value: angle }))];
+
+                for (let i = 0; i < allAnglesToGenerate.length; i++) {
+                    const angleInfo = allAnglesToGenerate[i];
+                    
+                    if (angleInfo.type === 'predefined') {
+                        this.setCameraPositionPredefined(tempCamera, angleInfo.value);
+                    } else if (angleInfo.type === 'custom') {
+                        this.setCameraPositionCustom(tempCamera, angleInfo.value);
+                    }
+                    
+                    // 現在のレンダリングスタイルをtempRendererにも適用
+                    tempRenderer.render(this.scene, tempCamera);
+                    const dataURL = tempRenderer.domElement.toDataURL('image/png');
+                    
+                    let angleName;
+                    if (angleInfo.type === 'predefined') {
+                        angleName = this.getAngleName(angleInfo.value);
+                    } else {
+                        angleName = `Custom_X${angleInfo.value.x}_Y${angleInfo.value.y}_Z${angleInfo.value.z}`;
+                    }
+
+                    this.generatedImages.push({
+                        angle: angleInfo.value,
+                        dataURL: dataURL,
+                        name: `model_${angleName}.png`
+                    });
+                    
+                    this.showProgress((i + 1) / allAnglesToGenerate.length * 100);
+                }
+                
+                tempRenderer.dispose();
+                
+                this.displayGeneratedImages();
+                this.showSuccess(`${allAnglesToGenerate.length} images generated successfully!`);
+                this.hideProgress();
+                this.isGeneratingImages = false;
+                document.getElementById('generateBtn').disabled = false;
+            }
+
+            setCameraPositionPredefined(camera, angle) {
+                const box = new THREE.Box3().setFromObject(this.model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const fov = camera.fov * (Math.PI / 180);
+                const cameraDistance = Math.abs((maxDim * this.model.scale.x) / 2 / Math.tan(fov / 2)) * 1.2; // モデルのサイズに合わせて距離を調整
+
+                const offset = new THREE.Vector3();
+                switch (angle) {
+                    case 'front': offset.set(0, 0, cameraDistance); break;
+                    case 'back': offset.set(0, 0, -cameraDistance); break;
+                    case 'left': offset.set(-cameraDistance, 0, 0); break;
+                    case 'right': offset.set(cameraDistance, 0, 0); break;
+                    case 'top': offset.set(0, cameraDistance, 0); break;
+                    case 'bottom': offset.set(0, -cameraDistance, 0); break;
+                    case 'iso1': offset.set(cameraDistance, cameraDistance, cameraDistance); break;
+                    case 'iso2': offset.set(-cameraDistance, cameraDistance, cameraDistance); break;
+                }
+                
+                camera.position.copy(offset);
+                camera.lookAt(0, 0, 0);
+                camera.updateMatrixWorld();
+            }
+
+            setCameraPositionCustom(camera, angle) {
+                const box = new THREE.Box3().setFromObject(this.model);
+                const center = box.getCenter(new THREE.Vector3());
+                const size = box.getSize(new THREE.Vector3());
+                const maxDim = Math.max(size.x, size.y, size.z);
+                const fov = camera.fov * (Math.PI / 180);
+                const cameraDistance = Math.abs((maxDim * this.model.scale.x) / 2 / Math.tan(fov / 2)) * 1.2; // モデルのサイズに合わせて距離を調整
+
+                // カメラを原点に配置
+                camera.position.set(0, 0, 0);
+                camera.rotation.set(0, 0, 0); // 回転をリセット
+
+                // 回転を適用 (度をラジアンに変換)
+                camera.rotation.x = angle.x * Math.PI / 180;
+                camera.rotation.y = angle.y * Math.PI / 180;
+                camera.rotation.z = angle.z * Math.PI / 180;
+
+                // モデルから適切な距離にカメラを移動 (逆回転を考慮)
+                camera.translateZ(cameraDistance); // Z軸に沿って後退
+
+                camera.lookAt(0, 0, 0); // モデルの中心を見る
+                camera.updateMatrixWorld();
+            }
+
+
+            displayGeneratedImages() {
+                const grid = document.getElementById('imagesGrid');
+                grid.innerHTML = '';
+                
+                this.generatedImages.forEach((image, index) => {
+                    const item = document.createElement('div');
+                    item.className = 'image-item';
+                    
+                    let angleName;
+                    if (typeof image.angle === 'string') {
+                        angleName = this.getAngleName(image.angle);
+                    } else { // カスタム角度の場合
+                        angleName = `X:${image.angle.x}° Y:${image.angle.y}° Z:${image.angle.z}°`;
+                    }
+                    
+                    item.innerHTML = `
+                        <img src="${image.dataURL}" alt="${angleName}">
+                        <h3>${angleName}</h3>
+                        <button class="btn download-btn" onclick="converter.downloadImage(${index})">
+                            💾 Download
+                        </button>
+                    `;
+                    
+                    grid.appendChild(item);
+                });
+                
+                if (this.generatedImages.length > 0) {
+                    document.getElementById('downloadAllBtn').style.display = 'block';
+                } else {
+                    document.getElementById('downloadAllBtn').style.display = 'none';
+                }
+            }
+
+            getAngleName(angle) {
+                const names = {
+                    'front': 'Front',
+                    'back': 'Back',
+                    'left': 'Left',
+                    'right': 'Right',
+                    'top': 'Top',
+                    'bottom': 'Bottom',
+                    'iso1': 'Isometric 1',
+                    'iso2': 'Isometric 2'
+                };
+                return names[angle] || angle;
+            }
+
+            downloadImage(index) {
+                const image = this.generatedImages[index];
+                const link = document.createElement('a');
+                link.download = image.name;
+                link.href = image.dataURL;
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+            }
+
+            async downloadAllImages() {
+                // Create zip file simulation with individual downloads
+                for (let i = 0; i < this.generatedImages.length; i++) {
+                    setTimeout(() => {
+                        this.downloadImage(i);
+                    }, i * 200); // Stagger downloads to avoid browser blocking
+                }
+                
+                this.showSuccess('Started downloading all images!');
+            }
+
+            showStatus(message) {
+                const status = document.getElementById('status');
+                status.textContent = message;
+                status.className = 'status';
+            }
+
+            showError(message) {
+                const status = document.getElementById('status');
+                status.textContent = message;
+                status.className = 'status error';
+            }
+
+            showSuccess(message) {
+                const status = document.getElementById('status');
+                status.textContent = message;
+                status.className = 'status success';
+            }
+
+            showProgress(percent) {
+                const progressBar = document.getElementById('progressBar');
+                const progressFill = document.getElementById('progressFill');
+                progressBar.style.display = 'block';
+                progressFill.style.width = percent + '%';
+            }
+
+            hideProgress() {
+                setTimeout(() => {
+                    document.getElementById('progressBar').style.display = 'none';
+                }, 1000);
+            }
+        }
+
+        // Initialize the converter
+        const converter = new Model3DConverter();
+    </script>
+</body>
+</html>
