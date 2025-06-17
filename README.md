@@ -1,1 +1,1 @@
-# 3D_model_to_images_converter
+# 3D_mode
