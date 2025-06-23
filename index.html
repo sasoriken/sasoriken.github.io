@@ -445,7 +445,7 @@
                 const lights = this.scene.children.filter(child => child.isLight);
                 lights.forEach(light => this.scene.remove(light));
                 this.scene.add(new THREE.AmbientLight(0xffffff, this.renderSettings.shadowIntensity));
-                const finalLightIntensity = this.renderSettings.lightIntensity * 3.0;
+                const finalLightIntensity = this.renderSettings.lightIntensity * 25.0;
                 const directionalLight = new THREE.DirectionalLight(0xffffff, finalLightIntensity);
                 directionalLight.position.set(10, 10, 5);
                 directionalLight.castShadow = true;
