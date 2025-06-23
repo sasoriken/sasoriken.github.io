@@ -547,6 +547,9 @@
                 for (let i = 0; i < this.selectedAngles.length; i++) {
                     const angle = this.selectedAngles[i];
                     const tempCamera = this.getCameraForAngle(angle, baseCamera);
+                    // Aspect ratio correction
+                    tempCamera.aspect = 1.0;
+                    tempCamera.updateProjectionMatrix();
                     tempRenderer.setClearColor(this.renderSettings.bgColor);
                     tempRenderer.render(this.scene, tempCamera);
                     const dataURL = tempRenderer.domElement.toDataURL('image/png');
