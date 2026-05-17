@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="site-root" content="../../">
+
+<title data-lang="ja" class="inline">UNIT-Ω アーキテクチャアーカイブ — sasoriken</title>
+<title data-lang="en" class="inline" hidden>UNIT-Ω Architecture Archive — sasoriken</title>
+
+<meta name="description" data-lang="ja" content="GitHub Actions で論文を自動生成・公開する、完全無人運営のアーカイブ UNIT-Ω の紹介。">
+<meta name="description" data-lang="en" content="UNIT-Ω — a fully autonomous paper archive that generates and publishes content via GitHub Actions.">
+<meta property="og:title" content="UNIT-Ω — sasoriken">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sasoriken.github.io/works/unit-omega/">
+<meta property="og:image" content="https://sasoriken.github.io/assets/projects/unit-omega/1.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2E7D3'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23B8722B' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23B8722B'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="../../" class="brand">sasoriken<span class="brand-dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="primary">
+      <ul class="nav-links">
+        <li><a href="../" data-i18n="nav.works">Works</a></li>
+        <li><a href="../../about/" data-i18n="nav.about">About</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-set="ja" aria-pressed="true">JP</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-i18n="nav.menu">メニュー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="project-hero">
+    <div class="container">
+      <div class="title-row fade-in">
+        <h1 class="project-title" data-lang="ja">UNIT-Ω アーキテクチャアーカイブ</h1>
+        <h1 class="project-title" data-lang="en">UNIT-Ω Architecture Archive</h1>
+      </div>
+      <p class="project-oneliner" data-lang="ja">GitHub Actions で論文を自動生成・公開する、完全無人運営のアーカイブ。</p>
+      <p class="project-oneliner" data-lang="en">A fully autonomous paper archive that generates and publishes content via GitHub Actions, with no human in the loop.</p>
+
+      <div class="badges fade-in">
+        <span class="badge">content_platform</span>
+        <span class="badge badge--status" data-status="active"><span class="status-dot" aria-hidden="true"></span>active</span>
+        <span class="badge badge--pricing" data-pricing="free">free</span>
+        <span class="badge">Web</span>
+        <span class="badge">2026-05 —</span>
+      </div>
+
+      <div class="project-buttons fade-in">
+        <a class="btn btn--primary" href="https://sasoriken.github.io/android-papers/" rel="noopener" target="_blank">
+          <span data-lang="ja">公開サイトを開く ↗</span>
+          <span data-lang="en">Visit site ↗</span>
+        </a>
+        <a class="btn btn--ghost" href="https://github.com/sasoriken/android-papers" rel="noopener" target="_blank">GitHub ↗</a>
+      </div>
+    </div>
+  </section>
+
+  <section class="container fade-in">
+    <div class="shot-gallery">
+      <figure>
+        <img src="../../assets/projects/unit-omega/1.png" alt="UNIT-Ω の画面（1）">
+        <figcaption data-lang="ja">UNIT-Ω の画面（1）</figcaption>
+        <figcaption data-lang="en">UNIT-Ω screenshot (1)</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <article class="project-body">
+
+    <section data-lang="ja" class="fade-in">
+      <h2 data-i18n="project.section.overview">概要</h2>
+      <p>UNIT-Ω アーキテクチャアーカイブは、論文形式のコンテンツを GitHub Actions で自動生成し、GitHub Pages 上で公開する無人運営のアーカイブサイトです。リポジトリそのものが「装置」として機能し、Workflow permissions と auto-merge の設定が整っていれば、人間が手を入れなくても新しい論文が増え続けます。<code>github_actions_lessons.md</code> に運用過程で得られた知見（自動マージの設定順序、Workflow permission の罠など）が継続的に集積されており、装置としての完成度と運用ノウハウの両方を見せられるプロジェクトです。</p>
+    </section>
+
+    <section data-lang="en" class="fade-in">
+      <h2 data-i18n="project.section.overview">Overview</h2>
+      <p>UNIT-Ω is an autonomous paper archive that uses GitHub Actions to auto-generate paper-style content and publish it to GitHub Pages. The repository itself acts as the production environment: once Workflow permissions and auto-merge are configured correctly, new papers keep accumulating without any human intervention. A companion document, <code>github_actions_lessons.md</code>, captures the operational lessons learned along the way — workflow permission pitfalls, auto-merge gotchas, label-based detection patterns — making the project useful both as a working artifact and as a reference for similar automation setups.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.motivation">動機・経緯</h2>
+      <p>人格を与えた AI に意味不明な論文をひたすら書かせると、一体どのようなものが出来上がるのか、というただの好奇心です。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.tech">技術的なポイント</h2>
+      <p><code>SETUP.md</code> には GitHub リポジトリの初期化から auto-merge、GitHub Pages、Secrets 登録までの手順が明文化されており、装置を最初から組み直す再現性が確保されています。スキーマ駆動で動く構成で、<code>schema/</code>・<code>prompts/</code>・<code>scripts/</code> を組み合わせて論文の構造・生成プロンプト・検証ロジックを分離。<code>docs/index.html</code>（約 43KB）が公開サイトの主体で、生成されたデータと組み合わさってブラウザ側で表示される作りです。論文タイトルの日英統一など、運用しながらの仕様変更も継続して PR として取り込んでいます。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.lessons">苦労した点・学んだこと</h2>
+      <p><code>github_actions_lessons.md</code> に集積されている内容そのものが、このプロジェクトの「苦労と学び」の記録です。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.status_future">現状とこれから</h2>
+      <p>自動化基盤と論文データの両方が継続的に追加されています。今後の方向性については未定です。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.stack">技術スタック</h2>
+      <ul class="tech-tags">
+        <li class="tech-tag">GitHub Actions</li>
+        <li class="tech-tag">Node.js</li>
+        <li class="tech-tag">GitHub Pages</li>
+        <li class="tech-tag">JSON Schema</li>
+      </ul>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.related">関連プロジェクト</h2>
+      <div class="related-grid">
+        <a class="related-card" href="../ai-lectures/">
+          <div class="title">AI-Lectures</div>
+          <div class="one" data-lang="ja">同じく自動生成型コンテンツサイトの系統。</div>
+          <div class="one" data-lang="en">Another autonomous content site in the same lineage.</div>
+        </a>
+        <a class="related-card" href="../hakoniwa-vault/">
+          <div class="title">★ Hakoniwa Vault</div>
+          <div class="one" data-lang="ja">3D モデル統合管理ソフト。</div>
+          <div class="one" data-lang="en">Integrated 3D asset manager.</div>
+        </a>
+        <a class="related-card" href="../magic-circle-generator/">
+          <div class="title" data-lang="ja">★ 3D 魔法陣アニメジェネレータ</div>
+          <div class="title" data-lang="en">★ Magic Circle Generator</div>
+          <div class="one" data-lang="ja">プロシージャル魔法陣ジェネレータ。</div>
+          <div class="one" data-lang="en">Procedural magic-circle generator.</div>
+        </a>
+      </div>
+    </section>
+
+    <a class="back-link" href="../" data-i18n="project.back">作品一覧に戻る</a>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-row">
+      <p class="footer-copy">&copy; <span data-footer-year>2026</span> sasoriken</p>
+      <ul class="contact-list" style="justify-content: center;">
+        <li><a class="contact-link" href="https://x.com/usaori11" rel="noopener" target="_blank" aria-label="X (Twitter)"><span aria-hidden="true">✕</span></a></li>
+        <li><a class="contact-link" href="https://github.com/sasoriken" rel="noopener" target="_blank" aria-label="GitHub"><span aria-hidden="true">⌥</span></a></li>
+        <li><a class="contact-link" data-u="data.gachizei.c" data-d="gmail.com" href="#" aria-label="Email"><span aria-hidden="true">✉</span></a></li>
+        <li><a class="contact-link" href="https://varse.booth.pm/" rel="noopener" target="_blank" aria-label="BOOTH"><span aria-hidden="true">▢</span></a></li>
+        <li><a class="contact-link" href="https://usasori-data.itch.io/" rel="noopener" target="_blank" aria-label="itch.io"><span aria-hidden="true">◆</span></a></li>
+      </ul>
+      <p class="footer-tag" data-i18n="footer.tag">Built with care, by sasoriken.</p>
+    </div>
+    <div class="footer-featured">
+      <span class="footer-featured-label" data-i18n="footer.featured_label">Featured:</span>
+      <a class="footer-featured-item" href="../hakoniwa-vault/">★ Hakoniwa Vault</a>
+      <a class="footer-featured-item" href="../magic-circle-generator/">
+        <span data-lang="ja">★ 3D 魔法陣アニメジェネレータ</span>
+        <span data-lang="en">★ Magic Circle Generator</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

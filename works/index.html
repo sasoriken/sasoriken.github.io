@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="site-root" content="../">
+
+<title data-lang="ja" class="inline">Works — sasoriken</title>
+<title data-lang="en" class="inline" hidden>Works — sasoriken</title>
+
+<meta name="description" data-lang="ja" content="sasoriken の全作品一覧。カテゴリ・ステータス・配布形態でフィルタ可能。">
+<meta name="description" data-lang="en" content="All projects by sasoriken. Filter by category, status, and distribution.">
+<meta property="og:title" content="Works — sasoriken">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://sasoriken.github.io/works/">
+<meta property="og:image" content="https://sasoriken.github.io/assets/projects/hakoniwa-vault/1.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2E7D3'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23B8722B' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23B8722B'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="../" class="brand" aria-label="sasoriken — home">sasoriken<span class="brand-dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="primary">
+      <ul class="nav-links">
+        <li><a href="./" aria-current="page" data-i18n="nav.works">Works</a></li>
+        <li><a href="../about/" data-i18n="nav.about">About</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-set="ja" aria-pressed="true">JP</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-i18n="nav.menu">メニュー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="section">
+    <div class="container">
+      <header class="section-head fade-in">
+        <div>
+          <h1 class="section-title" data-i18n="works.title">All Works</h1>
+          <p class="section-desc" data-i18n="works.intro">全 6 件。カテゴリ・ステータス・配布形態で絞り込めます。</p>
+        </div>
+      </header>
+
+      <form class="filter-bar fade-in" data-filter-form>
+        <fieldset class="filter-group" style="border: 0; padding: 0; margin: 0;">
+          <legend class="filter-label" data-i18n="filter.category">カテゴリ</legend>
+          <div class="filter-options">
+            <label><input type="checkbox" data-group="category" value="tool_3d"><span data-i18n="filter.cat.tool_3d">3D ツール</span></label>
+            <label><input type="checkbox" data-group="category" value="creative_tool"><span data-i18n="filter.cat.creative_tool">創作支援</span></label>
+            <label><input type="checkbox" data-group="category" value="gamedev"><span data-i18n="filter.cat.gamedev">ゲーム開発向け</span></label>
+            <label><input type="checkbox" data-group="category" value="content_platform"><span data-i18n="filter.cat.content_platform">コンテンツ基盤</span></label>
+            <label><input type="checkbox" data-group="category" value="experiment"><span data-i18n="filter.cat.experiment">実験・設計</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="filter-group" style="border: 0; padding: 0; margin: 0;">
+          <legend class="filter-label" data-i18n="filter.status">ステータス</legend>
+          <div class="filter-options">
+            <label><input type="checkbox" data-group="status" value="active"><span data-i18n="filter.status.active">active</span></label>
+            <label><input type="checkbox" data-group="status" value="maintained"><span data-i18n="filter.status.maintained">maintained</span></label>
+            <label><input type="checkbox" data-group="status" value="wip"><span data-i18n="filter.status.wip">wip</span></label>
+          </div>
+        </fieldset>
+
+        <fieldset class="filter-group" style="border: 0; padding: 0; margin: 0;">
+          <legend class="filter-label" data-i18n="filter.pricing">配布形態</legend>
+          <div class="filter-options">
+            <label><input type="checkbox" data-group="pricing" value="free"><span data-i18n="filter.pricing.free">無料</span></label>
+            <label><input type="checkbox" data-group="pricing" value="paid"><span data-i18n="filter.pricing.paid">有料</span></label>
+            <label><input type="checkbox" data-group="pricing" value="freemium"><span data-i18n="filter.pricing.freemium">PRO + FREE</span></label>
+            <label><input type="checkbox" data-group="pricing" value="unreleased"><span data-i18n="filter.pricing.unreleased">未配布</span></label>
+          </div>
+        </fieldset>
+
+        <div class="filter-group" style="justify-content: flex-end; min-width: 0;">
+          <button type="button" class="btn btn--ghost" data-filter-reset data-i18n="filter.reset">リセット</button>
+        </div>
+      </form>
+
+      <p class="results-meta" data-results-meta>6 / 6</p>
+
+      <ul class="card-grid" data-works-list>
+        <!-- featured first, then last_updated desc -->
+        <!-- 1. Hakoniwa Vault (featured, 2026-03) -->
+        <li class="card card--featured" data-card data-category="tool_3d" data-status="active" data-pricing="paid">
+          <a class="card-link" href="hakoniwa-vault/">
+            <span class="featured-badge" aria-label="Featured">★ Featured</span>
+            <div class="card-thumb">
+              <img src="../assets/projects/hakoniwa-vault/1.png" alt="Hakoniwa Vault" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">Hakoniwa Vault</h2>
+              <p class="card-summary" data-lang="ja">VRM や GLB を含む 3D モデルを「収集・整理・展示・撮影」できる統合管理ソフト。</p>
+              <p class="card-summary" data-lang="en">An integrated 3D asset manager for collecting, organizing, displaying, and capturing VRM, GLB, FBX, and OBJ models.</p>
+              <div class="badges">
+                <span class="badge">tool_3d</span>
+                <span class="badge badge--status" data-status="active"><span class="status-dot" aria-hidden="true"></span>active</span>
+                <span class="badge badge--pricing" data-pricing="paid">paid</span>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 2. Magic Circle Generator (featured, 2026-05) -->
+        <li class="card card--featured" data-card data-category="gamedev" data-status="active" data-pricing="freemium">
+          <a class="card-link" href="magic-circle-generator/">
+            <span class="featured-badge" aria-label="Featured">★ Featured</span>
+            <div class="card-thumb">
+              <img src="../assets/projects/magic-circle-generator/1.png" alt="3D Magic Circle Generator" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h2 class="card-title" data-lang="ja">3D 魔法陣アニメジェネレータ</h2>
+              <h2 class="card-title" data-lang="en">3D Magic Circle Animation Generator</h2>
+              <p class="card-summary" data-lang="ja">ゲーム・映像制作向けに 3D 魔法陣をプロシージャル生成し、アニメ付き GLB 等で書き出せるツール。</p>
+              <p class="card-summary" data-lang="en">A procedural 3D magic-circle generator for game and video production, exporting to animated GLB, OBJ, PNG, and spritesheets.</p>
+              <div class="badges">
+                <span class="badge">gamedev</span>
+                <span class="badge badge--status" data-status="active"><span class="status-dot" aria-hidden="true"></span>active</span>
+                <span class="badge badge--pricing" data-pricing="freemium">PRO + FREE</span>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- non-featured ordered by last_updated desc -->
+        <!-- 3. AI-Lectures (2026-05) -->
+        <li class="card" data-card data-category="content_platform" data-status="active" data-pricing="free">
+          <a class="card-link" href="ai-lectures/">
+            <div class="card-thumb">
+              <img src="../assets/projects/ai-lectures/1.png" alt="AI-Lectures" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">AI-Lectures</h2>
+              <p class="card-summary" data-lang="ja">合成知性「Lecturia」が論文・数学・特許・音楽・法律を毎日自動解説するサイト。</p>
+              <p class="card-summary" data-lang="en">A site where Lecturia, a fictional synthetic intelligence, auto-publishes daily lectures on papers, math, patents, music, and law.</p>
+              <div class="badges">
+                <span class="badge">content_platform</span>
+                <span class="badge badge--status" data-status="active"><span class="status-dot" aria-hidden="true"></span>active</span>
+                <span class="badge badge--pricing" data-pricing="free">free</span>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 4. UNIT-Ω (2026-05) -->
+        <li class="card" data-card data-category="content_platform" data-status="active" data-pricing="free">
+          <a class="card-link" href="unit-omega/">
+            <div class="card-thumb">
+              <img src="../assets/projects/unit-omega/1.png" alt="UNIT-Ω" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">UNIT-Ω</h2>
+              <p class="card-summary" data-lang="ja">GitHub Actions で論文を自動生成・公開する、完全無人運営のアーカイブ。</p>
+              <p class="card-summary" data-lang="en">A fully autonomous paper archive that generates and publishes content via GitHub Actions, with no human in the loop.</p>
+              <div class="badges">
+                <span class="badge">content_platform</span>
+                <span class="badge badge--status" data-status="active"><span class="status-dot" aria-hidden="true"></span>active</span>
+                <span class="badge badge--pricing" data-pricing="free">free</span>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 5. Folio (2026-05) -->
+        <li class="card" data-card data-category="creative_tool" data-status="wip" data-pricing="unreleased">
+          <a class="card-link" href="folio/">
+            <div class="card-thumb">
+              <img src="../assets/projects/folio/1.png" alt="Folio" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h2 class="card-title">Folio</h2>
+              <p class="card-summary" data-lang="ja">小説を「3D の本」として手に取り、ページをめくって読む仮想図書館。</p>
+              <p class="card-summary" data-lang="en">A virtual library where novels are 3D books — pick them up, flip the pages, read.</p>
+              <div class="badges">
+                <span class="badge">creative_tool</span>
+                <span class="badge badge--status" data-status="wip"><span class="status-dot" aria-hidden="true"></span>wip</span>
+                <span class="badge badge--pricing" data-pricing="unreleased">unreleased</span>
+              </div>
+            </div>
+          </a>
+        </li>
+
+        <!-- 6. Novel Engine (2026-05) -->
+        <li class="card" data-card data-category="experiment" data-status="maintained" data-pricing="unreleased">
+          <a class="card-link" href="novel-engine-design/">
+            <div class="card-thumb">
+              <img src="../assets/projects/novel-engine-design/1.png" alt="Novel Engine" loading="lazy">
+            </div>
+            <div class="card-body">
+              <h2 class="card-title" data-lang="ja">Novel Engine（設計プロジェクト）</h2>
+              <h2 class="card-title" data-lang="en">Novel Engine (Design Project)</h2>
+              <p class="card-summary" data-lang="ja">小説を AST 的な構造化データとして管理する、全自動執筆パイプラインの設計プロジェクト。</p>
+              <p class="card-summary" data-lang="en">A design project for an autonomous novel-writing pipeline that treats prose as AST-like structured data.</p>
+              <div class="badges">
+                <span class="badge">experiment</span>
+                <span class="badge badge--status" data-status="maintained"><span class="status-dot" aria-hidden="true"></span>maintained</span>
+                <span class="badge badge--pricing" data-pricing="unreleased">unreleased</span>
+              </div>
+            </div>
+          </a>
+        </li>
+      </ul>
+
+      <p data-empty hidden style="text-align: center; color: var(--color-text-tertiary); margin-top: var(--space-6);" data-i18n="works.empty">条件に一致する作品がありません。</p>
+    </div>
+  </section>
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-row">
+      <p class="footer-copy">&copy; <span data-footer-year>2026</span> sasoriken</p>
+      <ul class="contact-list" style="justify-content: center;">
+        <li><a class="contact-link" href="https://x.com/usaori11" rel="noopener" target="_blank" aria-label="X (Twitter)"><span aria-hidden="true">✕</span></a></li>
+        <li><a class="contact-link" href="https://github.com/sasoriken" rel="noopener" target="_blank" aria-label="GitHub"><span aria-hidden="true">⌥</span></a></li>
+        <li><a class="contact-link" data-u="data.gachizei.c" data-d="gmail.com" href="#" aria-label="Email"><span aria-hidden="true">✉</span></a></li>
+        <li><a class="contact-link" href="https://varse.booth.pm/" rel="noopener" target="_blank" aria-label="BOOTH"><span aria-hidden="true">▢</span></a></li>
+        <li><a class="contact-link" href="https://usasori-data.itch.io/" rel="noopener" target="_blank" aria-label="itch.io"><span aria-hidden="true">◆</span></a></li>
+      </ul>
+      <p class="footer-tag" data-i18n="footer.tag">Built with care, by sasoriken.</p>
+    </div>
+    <div class="footer-featured">
+      <span class="footer-featured-label" data-i18n="footer.featured_label">Featured:</span>
+      <a class="footer-featured-item" href="hakoniwa-vault/">★ Hakoniwa Vault</a>
+      <a class="footer-featured-item" href="magic-circle-generator/">
+        <span data-lang="ja">★ 3D 魔法陣アニメジェネレータ</span>
+        <span data-lang="en">★ Magic Circle Generator</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>

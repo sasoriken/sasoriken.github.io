@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="site-root" content="../../">
+
+<title data-lang="ja" class="inline">Folio — sasoriken</title>
+<title data-lang="en" class="inline" hidden>Folio — sasoriken</title>
+
+<meta name="description" data-lang="ja" content="小説を「3D の本」として手に取り、ページをめくって読む仮想図書館 Folio の紹介。">
+<meta name="description" data-lang="en" content="Folio — a virtual library where novels are 3D books you can pick up and flip through.">
+<meta property="og:title" content="Folio — sasoriken">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sasoriken.github.io/works/folio/">
+<meta property="og:image" content="https://sasoriken.github.io/assets/projects/folio/1.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2E7D3'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23B8722B' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23B8722B'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="../../" class="brand">sasoriken<span class="brand-dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="primary">
+      <ul class="nav-links">
+        <li><a href="../" data-i18n="nav.works">Works</a></li>
+        <li><a href="../../about/" data-i18n="nav.about">About</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-set="ja" aria-pressed="true">JP</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-i18n="nav.menu">メニュー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="project-hero">
+    <div class="container">
+      <div class="title-row fade-in">
+        <h1 class="project-title">Folio</h1>
+      </div>
+      <p class="project-oneliner" data-lang="ja">小説を「3D の本」として手に取り、ページをめくって読む仮想図書館。</p>
+      <p class="project-oneliner" data-lang="en">A virtual library where novels are 3D books — pick them up, flip the pages, read.</p>
+
+      <div class="badges fade-in">
+        <span class="badge">creative_tool</span>
+        <span class="badge badge--status" data-status="wip"><span class="status-dot" aria-hidden="true"></span>wip</span>
+        <span class="badge badge--pricing" data-pricing="unreleased">unreleased</span>
+        <span class="badge">Web</span>
+        <span class="badge">2026-05 —</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container fade-in">
+    <div class="shot-gallery">
+      <figure>
+        <img src="../../assets/projects/folio/1.png" alt="Folio の画面（1）">
+        <figcaption data-lang="ja">Folio の画面（1）</figcaption>
+        <figcaption data-lang="en">Folio screenshot (1)</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <article class="project-body">
+
+    <section data-lang="ja" class="fade-in">
+      <h2 data-i18n="project.section.overview">概要</h2>
+      <p>Folio は、小説を「3D の本」として読む仮想図書館の体験を提供する Web アプリです。<code>.3dbook</code> という独自フォーマット（glTF の拡張仕様 <code>EXT_3d_book_data</code> を JSON で表現）を中心に、3D の本棚から本を取り出して読む読者向け面 <code>/library</code> と、<code>.3dbook</code> を編集・エクスポートする著者向け面 <code>/bindery</code> を、ひとつの SPA の中に同居させています。本という物体性とデジタルの編集性を 1 つのアプリで両立しようとする実験的なプロジェクトです。</p>
+    </section>
+
+    <section data-lang="en" class="fade-in">
+      <h2 data-i18n="project.section.overview">Overview</h2>
+      <p>Folio is a single-page web app built around the idea of reading novels as 3D books. It centers on a custom <code>.3dbook</code> format (a JSON expression of a proposed glTF extension, <code>EXT_3d_book_data</code>) and exposes two surfaces in one SPA: <code>/library</code>, a reader-facing 3D bookshelf, and <code>/bindery</code>, an author-facing editor that produces and exports <code>.3dbook</code> files. It tries to keep the tactile feel of a physical book and the editability of a digital format inside one continuous experience.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.motivation">動機・経緯</h2>
+      <p>私が web に連載している小説を 3D 化して読者に届けられたら面白いと思ったというのが経緯です。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.tech">技術的なポイント</h2>
+      <p>設計の北極星として「疎結合 4 層（Presentation → Application → Domain ↔ Infrastructure）」「<code>useFrame</code> 内で new 禁止による GC スパイクゼロ」「<code>.3dbook</code> を Zod スキーマから型派生させる単一契約」「世界観連動 (<code>environmentDelta</code>) を v0.1 から経路確保」の 4 点を明文化し、それらをカスタム ESLint ルール (<code>folio/no-allocation-in-frame</code>)・<code>import/no-restricted-paths</code>・Zod スキーマで機械的に保証する形に落としているのが特徴です。テストは Vitest（単体）と Playwright（E2E）の二段構え。Vite + TypeScript を採用し、ホットリロード前提の開発フローを取ります。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.lessons">苦労した点・学んだこと</h2>
+      <p>本の 3D モデル構築をプロシージャルな方法で実現するところが非常に苦労した点で、今なお課題でもあります。プロシージャルではなく既存の 3D モデルを使うべきかもしれません。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.status_future">現状とこれから</h2>
+      <p>2026 年 5 月開始の比較的新しいプロジェクトで、マイルストーン M5「開いた本の中央くぼみ (gutter) の表現」までが取り込まれています。設計ドキュメント (<code>DESIGN.md</code>, <code>TECH_STACK.md</code>) が継続的に更新されており、フェーズを切って段階的に機能を積み上げる進行をしています。今後の公開時期や配布形態をどうするかはまだ未定です。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.stack">技術スタック</h2>
+      <ul class="tech-tags">
+        <li class="tech-tag">TypeScript</li>
+        <li class="tech-tag">Vite</li>
+        <li class="tech-tag">Three.js / React Three Fiber</li>
+        <li class="tech-tag">Zod</li>
+        <li class="tech-tag">Vitest</li>
+        <li class="tech-tag">Playwright</li>
+        <li class="tech-tag">ESLint (custom rules)</li>
+      </ul>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.related">関連プロジェクト</h2>
+      <div class="related-grid">
+        <a class="related-card" href="../hakoniwa-vault/">
+          <div class="title">★ Hakoniwa Vault</div>
+          <div class="one" data-lang="ja">3D モデルを「収集・整理・展示・撮影」できる統合管理ソフト。</div>
+          <div class="one" data-lang="en">An integrated 3D asset manager.</div>
+        </a>
+        <a class="related-card" href="../magic-circle-generator/">
+          <div class="title" data-lang="ja">★ 3D 魔法陣アニメジェネレータ</div>
+          <div class="title" data-lang="en">★ Magic Circle Generator</div>
+          <div class="one" data-lang="ja">ゲーム・映像制作向けにプロシージャル魔法陣を生成。</div>
+          <div class="one" data-lang="en">Procedural 3D magic-circle generator.</div>
+        </a>
+      </div>
+    </section>
+
+    <a class="back-link" href="../" data-i18n="project.back">作品一覧に戻る</a>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-row">
+      <p class="footer-copy">&copy; <span data-footer-year>2026</span> sasoriken</p>
+      <ul class="contact-list" style="justify-content: center;">
+        <li><a class="contact-link" href="https://x.com/usaori11" rel="noopener" target="_blank" aria-label="X (Twitter)"><span aria-hidden="true">✕</span></a></li>
+        <li><a class="contact-link" href="https://github.com/sasoriken" rel="noopener" target="_blank" aria-label="GitHub"><span aria-hidden="true">⌥</span></a></li>
+        <li><a class="contact-link" data-u="data.gachizei.c" data-d="gmail.com" href="#" aria-label="Email"><span aria-hidden="true">✉</span></a></li>
+        <li><a class="contact-link" href="https://varse.booth.pm/" rel="noopener" target="_blank" aria-label="BOOTH"><span aria-hidden="true">▢</span></a></li>
+        <li><a class="contact-link" href="https://usasori-data.itch.io/" rel="noopener" target="_blank" aria-label="itch.io"><span aria-hidden="true">◆</span></a></li>
+      </ul>
+      <p class="footer-tag" data-i18n="footer.tag">Built with care, by sasoriken.</p>
+    </div>
+    <div class="footer-featured">
+      <span class="footer-featured-label" data-i18n="footer.featured_label">Featured:</span>
+      <a class="footer-featured-item" href="../hakoniwa-vault/">★ Hakoniwa Vault</a>
+      <a class="footer-featured-item" href="../magic-circle-generator/">
+        <span data-lang="ja">★ 3D 魔法陣アニメジェネレータ</span>
+        <span data-lang="en">★ Magic Circle Generator</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
