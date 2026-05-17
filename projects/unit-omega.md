@@ -43,8 +43,11 @@ tags:
   - GitHub Pages
   - paper archive
   - automation
-thumbnail: null
-screenshots: []
+thumbnail: ./assets/projects/unit-omega/1.png
+screenshots:
+  - path: ./assets/projects/unit-omega/1.png
+    caption_ja: UNIT-Ω の画面（1）
+    caption_en: UNIT-Ω screenshot (1)
 ---
 
 ## 概要 (JA)
@@ -57,7 +60,7 @@ UNIT-Ω is an autonomous paper archive that uses GitHub Actions to auto-generate
 
 ## 動機・経緯
 
-（要・本人記入）
+人格を与えた AI に意味不明な論文をひたすら書かせると、一体どのようなものが出来上がるのか、というただの好奇心です。
 
 ## 技術的なポイント
 
@@ -65,11 +68,11 @@ UNIT-Ω is an autonomous paper archive that uses GitHub Actions to auto-generate
 
 ## 苦労した点・学んだこと
 
-`github_actions_lessons.md` に集積されている内容そのものが、このプロジェクトの「苦労と学び」の記録です。具体的な学びの抜粋は（要・本人記入）。
+`github_actions_lessons.md` に集積されている内容そのものが、このプロジェクトの「苦労と学び」の記録です。
 
 ## 現状とこれから
 
-2026 年 5 月時点で稼働中。直近の PR 番号は 10 番台で、自動化基盤と論文データの両方が継続的に追加されています。今後の方向性については（要・本人記入）。
+自動化基盤と論文データの両方が継続的に追加されています。今後の方向性については未定です。
 
 ## 関連・参考
 

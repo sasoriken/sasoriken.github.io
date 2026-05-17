@@ -49,8 +49,14 @@ tags:
   - GLB export
   - Three.js
   - Tauri
-thumbnail: null
-screenshots: []
+thumbnail: ./assets/projects/magic-circle-generator/1.png
+screenshots:
+  - path: ./assets/projects/magic-circle-generator/1.png
+    caption_ja: 3D 魔法陣アニメジェネレータの画面（1）
+    caption_en: 3D Magic Circle Animation Generator screenshot (1)
+  - path: ./assets/projects/magic-circle-generator/2.png
+    caption_ja: 3D 魔法陣アニメジェネレータの画面（2）
+    caption_en: 3D Magic Circle Animation Generator screenshot (2)
 ---
 
 ## 概要 (JA)
@@ -63,7 +69,8 @@ The 3D Magic Circle Animation Generator builds magic circles procedurally by sta
 
 ## 動機・経緯
 
-このツールはもともと Hakoniwa Vault 内部の魔法陣ツールとして始まり、後に独立した別リポジトリ (`magic-circle-generator`) として分離された経緯があります。それ以上の動機については（要・本人記入）。
+このツールはもともと Hakoniwa Vault 内部の魔法陣ツールとして始まり、後に独立した別リポジトリ (`magic-circle-generator`) として分離された経緯があります。
+動機としては、Hakoniwa Vault のディスプレイ用に魔法陣を作っていたときに、プロシージャルで 3D モデルを作ることそのものへの興味が湧いたことに加え、これにデータ駆動設計を組み合わせたら面白そうだと感じたためです。そこで本体から分離して、本格的に一つのツールとして作り直しました。
 
 ## 技術的なポイント
 
@@ -71,11 +78,11 @@ The 3D Magic Circle Animation Generator builds magic circles procedurally by sta
 
 ## 苦労した点・学んだこと
 
-（要・本人記入）
+学びの中心はデータ駆動設計の有用性です。優れているところを具体的に挙げると、保守性が非常に良いこと、作成した魔法陣を構造化した文字列の塊だけで保存・復元できるため共有に向くこと、そして同じ仕組みのまま後々 DLC 等として追加販売も可能なこと、の三点です。この設計の良さを実装を通して肌で感じました。
 
 ## 現状とこれから
 
-2026 年 5 月時点で開発はアクティブに進行中。PR 番号は #236 を超えており、CI の自動マージフロー（jules ラベル検知、即時マージリトライ等）が継続的に整備されています。法務面の整備（EULA、プライバシーポリシー、サードパーティ通知、コマーシャルリリースチェックリスト）は日英両言語版が揃っており、有料リリースを前提とした体制が整えられています。今後のロードマップは（要・本人記入）。
+2026 年 5 月時点で開発はアクティブに進行中。PR 番号は #236 を超えており、CI の自動マージフロー（jules ラベル検知、即時マージリトライ等）が継続的に整備されています。法務面の整備（EULA、プライバシーポリシー、サードパーティ通知、コマーシャルリリースチェックリスト）は日英両言語版が揃っており、有料リリースを前提とした体制が整えられています。今後のロードマップは未定。
 
 ## 関連・参考
 

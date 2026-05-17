@@ -49,8 +49,14 @@ tags:
   - collection
   - diorama
   - showcase
-thumbnail: null
-screenshots: []
+thumbnail: ./assets/projects/hakoniwa-vault/1.png
+screenshots:
+  - path: ./assets/projects/hakoniwa-vault/1.png
+    caption_ja: Hakoniwa Vault の画面（1）
+    caption_en: Hakoniwa Vault screenshot (1)
+  - path: ./assets/projects/hakoniwa-vault/2.png
+    caption_ja: Hakoniwa Vault の画面（2）
+    caption_en: Hakoniwa Vault screenshot (2)
 ---
 
 ## 概要 (JA)
@@ -63,7 +69,7 @@ Hakoniwa Vault is a desktop and web application that brings 3D model collecting,
 
 ## 動機・経緯
 
-（要・本人記入）
+とあるシミュレーションゲームを作っているとき、ゲームで使用するアセットが数百種類まで溜まっていることがありました。それらを「どういうモデルなのか、大きさや角度はどうなっているか」を一目で確認したかったのですが、既存の 3D モデルビューワには求めるものがなく、自作することにしました。
 
 ## 技術的なポイント
 
@@ -71,11 +77,12 @@ Hakoniwa Vault is a desktop and web application that brings 3D model collecting,
 
 ## 苦労した点・学んだこと
 
-（要・本人記入）
+Three.js 自体が初めてだったので、一から仕様を理解するところに労力を割きました。特に苦労したのは、さまざまな 3D モデル拡張子の対応です。
+これらを適切に変換したり、古いバージョンで作成されたものでも正しく表示されないといけない、今後のことを考えると保守性も担保しなければならない、という多面的な要件が絡んでくる中で、アーキテクチャの重要性を非常に学びました。
 
 ## 現状とこれから
 
-2026 年 3 月時点のバージョン 0.7.5 が最新で、テクスチャバリエーション機能とサムネイル更新挙動の改善が直近の変更内容です。シネマティック・パスファインダー、プロシージャル配置、GIF 録画 UI などの拡張がここ数バージョンで連続して入っており、開発はアクティブに継続中です。今後の追加機能の方針は（要・本人記入）。
+2026 年 3 月時点のバージョン 0.7.5 が最新で、テクスチャバリエーション機能とサムネイル更新挙動の改善が直近の変更内容です。シネマティック・パスファインダー、プロシージャル配置、GIF 録画 UI などの拡張がここ数バージョンで連続して入っており、開発はアクティブに継続中です。今後の追加機能の方針は配布ページにあるロードマップを参照してください。
 
 ## 関連・参考
 

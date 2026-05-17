@@ -46,8 +46,11 @@ tags:
   - SQLite
   - MCP
   - semantic diff
-thumbnail: null
-screenshots: []
+thumbnail: ./assets/projects/novel-engine-design/1.png
+screenshots:
+  - path: ./assets/projects/novel-engine-design/1.png
+    caption_ja: Novel Engine の画面（1）
+    caption_en: Novel Engine screenshot (1)
 ---
 
 ## 概要 (JA)
@@ -60,19 +63,15 @@ Novel Engine is a design project for a writing pipeline that treats a novel not 
 
 ## 動機・経緯
 
-リポジトリの README に記されているとおり、実際の小説プロジェクトを執筆する中で「設定ファイルを AI に毎回読み込ませる必要がある」「設定変更時の矛盾検出が手動」「文体一貫性の維持が会話依存」といった問題に直面し、これらを構造化・機械化するアーキテクチャとして本プロジェクトが構想されました。それ以上の経緯については（要・本人記入）。
+実際の小説を執筆する中で「設定ファイルを AI に毎回読み込ませる必要がある」「設定変更時の矛盾検出が手動」「文体一貫性の維持が会話依存」といった問題に直面し、これらを構造化・機械化するアーキテクチャとして本プロジェクトが構想されました。
 
 ## 技術的なポイント
 
 設計の核は「Beat」を最小単位に置いたこと、散文自体も JSON で構造化すること、そして時系列付きの関係性を扱うために Story Graph をグラフ DB 的に設計したこと（Phase 1 は SQLite で代替）の三つです。散文を構造化することで、矛盾検出を AI 非依存の SQL クエリで実現でき、`style_template` を Beat 単位で適用することで文体一貫性が機械的に保証され、通常の git diff では捉えられない「意味の変化」を Semantic Diff として表現できる、という三点の機械保証を獲得しています。実装は Phase 1（DB スキーマ・矛盾検出・CLI）、Phase 2（Structurizer / WriterAgent / ContinuityChecker / ChangeManager / SemanticDiff）、Phase 3（Rendering Engine / Web UI / MCP サーバー）まで完了し、テスト 263 件が PASS する状態です。
 
-## 苦労した点・学んだこと
-
-（要・本人記入）
-
 ## 現状とこれから
 
-設計と Phase 1〜3 の実装が完了し、設計文書群（要件定義書・アーキテクチャ設計書・技術スタック仕様・具体例データモデル・未決事項と作業指示・商業化ロードマップ）が整備済み。商業化に向けたロードマップが既に書かれている段階ですが、現時点でこのプロジェクトはポートフォリオ上では「設計プロジェクト」として扱う方針です。今後の方向性については（要・本人記入）。
+設計と Phase 1〜3 の実装が完了し、設計文書群（要件定義書・アーキテクチャ設計書・技術スタック仕様・具体例データモデル・未決事項と作業指示・商業化ロードマップ）が整備済み。商業化に向けたロードマップが既に書かれている段階ですが、現時点でこのプロジェクトはポートフォリオ上では「設計プロジェクト」として扱う方針です。
 
 ## 関連・参考
 

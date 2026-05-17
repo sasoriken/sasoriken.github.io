@@ -46,8 +46,11 @@ tags:
   - glTF
   - reading experience
   - SPA
-thumbnail: null
-screenshots: []
+thumbnail: ./assets/projects/folio/1.png
+screenshots:
+  - path: ./assets/projects/folio/1.png
+    caption_ja: Folio の画面（1）
+    caption_en: Folio screenshot (1)
 ---
 
 ## 概要 (JA)
@@ -60,7 +63,7 @@ Folio is a single-page web app built around the idea of reading novels as 3D boo
 
 ## 動機・経緯
 
-（要・本人記入）
+私がwebに連載している小説を3D化して読者に届けられたら面白いと思ったというのが経緯です。
 
 ## 技術的なポイント
 
@@ -68,11 +71,11 @@ Folio is a single-page web app built around the idea of reading novels as 3D boo
 
 ## 苦労した点・学んだこと
 
-（要・本人記入）
+本の 3D モデル構築をプロシージャルな方法で実現するところが非常に苦労した点で、今なお課題でもあります。プロシージャルではなく既存の 3D モデルを使うべきかもしれません。
 
 ## 現状とこれから
 
-2026 年 5 月開始の比較的新しいプロジェクトで、マイルストーン M5「開いた本の中央くぼみ (gutter) の表現」までが取り込まれています。設計ドキュメント (`DESIGN.md`, `TECH_STACK.md`) が継続的に更新されており、フェーズを切って段階的に機能を積み上げる進行をしています。今後の公開時期や配布形態は（要・本人記入）。
+2026 年 5 月開始の比較的新しいプロジェクトで、マイルストーン M5「開いた本の中央くぼみ (gutter) の表現」までが取り込まれています。設計ドキュメント (`DESIGN.md`, `TECH_STACK.md`) が継続的に更新されており、フェーズを切って段階的に機能を積み上げる進行をしています。今後の公開時期や配布形態をどうするかはまだ未定です。
 
 ## 関連・参考
 
