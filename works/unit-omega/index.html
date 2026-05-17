@@ -81,12 +81,12 @@
 
     <section data-lang="ja" class="fade-in">
       <h2 data-i18n="project.section.overview">概要</h2>
-      <p>UNIT-Ω アーキテクチャアーカイブは、論文形式のコンテンツを GitHub Actions で自動生成し、GitHub Pages 上で公開する無人運営のアーカイブサイトです。リポジトリそのものが「装置」として機能し、Workflow permissions と auto-merge の設定が整っていれば、人間が手を入れなくても新しい論文が増え続けます。<code>github_actions_lessons.md</code> に運用過程で得られた知見（自動マージの設定順序、Workflow permission の罠など）が継続的に集積されており、装置としての完成度と運用ノウハウの両方を見せられるプロジェクトです。</p>
+      <p>UNIT-Ω アーキテクチャアーカイブは、論文形式のコンテンツを GitHub Actions で自動生成し、GitHub Pages 上で公開する無人運営のアーカイブサイトです。リポジトリそのものが「装置」として機能し、権限と自動マージの設定さえ整っていれば、人間が手を入れなくても新しい論文が増え続けます。運用の中で見えてきた知見（自動マージの設定順序、ワークフロー権限まわりの落とし穴など）も併せてリポジトリ内に蓄積しており、装置としての完成度と運用ノウハウの両方を見せられるプロジェクトです。</p>
     </section>
 
     <section data-lang="en" class="fade-in">
       <h2 data-i18n="project.section.overview">Overview</h2>
-      <p>UNIT-Ω is an autonomous paper archive that uses GitHub Actions to auto-generate paper-style content and publish it to GitHub Pages. The repository itself acts as the production environment: once Workflow permissions and auto-merge are configured correctly, new papers keep accumulating without any human intervention. A companion document, <code>github_actions_lessons.md</code>, captures the operational lessons learned along the way — workflow permission pitfalls, auto-merge gotchas, label-based detection patterns — making the project useful both as a working artifact and as a reference for similar automation setups.</p>
+      <p>UNIT-Ω is an autonomous paper archive that uses GitHub Actions to auto-generate paper-style content and publish it to GitHub Pages. The repository itself acts as the production environment: once workflow permissions and auto-merge are configured correctly, new papers keep accumulating without any human intervention. Operational lessons learned along the way — workflow permission pitfalls, auto-merge gotchas, label-based detection patterns — are kept inside the repository as a running notebook, making the project useful both as a working artifact and as a reference for similar automation setups.</p>
     </section>
 
     <section class="fade-in">
@@ -96,12 +96,12 @@
 
     <section class="fade-in">
       <h2 data-i18n="project.section.tech">技術的なポイント</h2>
-      <p><code>SETUP.md</code> には GitHub リポジトリの初期化から auto-merge、GitHub Pages、Secrets 登録までの手順が明文化されており、装置を最初から組み直す再現性が確保されています。スキーマ駆動で動く構成で、<code>schema/</code>・<code>prompts/</code>・<code>scripts/</code> を組み合わせて論文の構造・生成プロンプト・検証ロジックを分離。<code>docs/index.html</code>（約 43KB）が公開サイトの主体で、生成されたデータと組み合わさってブラウザ側で表示される作りです。論文タイトルの日英統一など、運用しながらの仕様変更も継続して PR として取り込んでいます。</p>
+      <p>セットアップ手順書がリポジトリに同梱されており、リポジトリ初期化から自動マージ・GitHub Pages 公開・シークレット登録までの一連の流れが明文化されています。装置を最初から組み直しても同じ挙動になる再現性を確保している点が大きな特徴です。内部はスキーマ駆動の構成で、論文の構造定義・生成プロンプト・検証ロジックを別々のレイヤーに分離。公開サイト本体は単一のフロントエンド HTML が担当し、生成されたデータと合わさってブラウザ側で動的に表示される作りです。論文タイトルの日英統一など、運用しながらの仕様変更も継続して取り込んでいます。</p>
     </section>
 
     <section class="fade-in">
       <h2 data-i18n="project.section.lessons">苦労した点・学んだこと</h2>
-      <p><code>github_actions_lessons.md</code> に集積されている内容そのものが、このプロジェクトの「苦労と学び」の記録です。</p>
+      <p>運用ノウハウとしてリポジトリ内に記録している知見集そのものが、このプロジェクトの「苦労と学び」のログです。自動マージの設定順序やワークフロー権限まわりで実際にハマった具体事例と、その回避策が継続的に書き溜められています。</p>
     </section>
 
     <section class="fade-in">

@@ -100,7 +100,7 @@
 
     <section class="fade-in">
       <h2 data-i18n="project.section.tech">技術的なポイント</h2>
-      <p>レンダリングは Three.js、デスクトップ化は Tauri v2 + Rust、ビルドは Vite、リポジトリ管理は npm workspaces + pnpm-workspace で <code>apps/web/</code> <code>packages/core/</code> <code>packages/shared/</code> のモノレポ構成を取っています。コア部分は <code>Assembler.js</code>（JSON → Three.js シーン）、コンポーネント（リング・図形・ルーン・エフェクト）、エクスポーター（<code>AnimationExporter</code> が GLB のマルチクリップ出力を担当）、ファクトリ（バリエーション生成）、モディファイア（マテリアル変換）、プリセットというモジュール分割で、GUI と切り離して使える設計です。PRO と FREE はビルドスクリプト (<code>npm run tauri:build</code> / <code>npm run tauri:build:free</code>) の段階で切り替わり、それぞれ別パッケージとして <code>release-package/</code> と <code>release-package-free/</code> に出力されます。</p>
+      <p>レンダリングは Three.js、デスクトップ化は Tauri v2 + Rust、ビルドは Vite、Web 用パッケージと共通ロジック・共有定義の 3 つに分けたモノレポ構成を取っています。コア部分はモジュール分割が徹底されており、JSON 定義から Three.js シーンを組み立てるアセンブラ層・図形やルーン・エフェクト等のコンポーネント層・GLB のマルチクリップ出力を担当するアニメーションエクスポーター層・バリエーション生成のファクトリ層・マテリアル変換のモディファイア層・プリセット層、というレイヤー設計で、GUI と切り離して使える構造です。PRO と FREE はビルドコマンドの段階で切り替わり、それぞれ独立した配布パッケージとして出力されます。</p>
     </section>
 
     <section class="fade-in">
@@ -110,7 +110,7 @@
 
     <section class="fade-in">
       <h2 data-i18n="project.section.status_future">現状とこれから</h2>
-      <p>2026 年 5 月時点で開発はアクティブに進行中。PR 番号は #236 を超えており、CI の自動マージフロー（jules ラベル検知、即時マージリトライ等）が継続的に整備されています。法務面の整備（EULA、プライバシーポリシー、サードパーティ通知、コマーシャルリリースチェックリスト）は日英両言語版が揃っており、有料リリースを前提とした体制が整えられています。今後のロードマップは未定。</p>
+      <p>2026 年 5 月時点で開発はアクティブに進行中。CI 側では自動マージフロー（AI が立てた PR の検知・即時マージリトライ等）が継続的に整備されています。法務面の整備（EULA、プライバシーポリシー、サードパーティ通知、コマーシャルリリースチェックリスト）は日英両言語版が揃っており、有料リリースを前提とした体制が整えられています。今後のロードマップは未定。</p>
     </section>
 
     <section class="fade-in">
