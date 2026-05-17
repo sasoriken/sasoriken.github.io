@@ -8,8 +8,8 @@
 <title data-lang="ja" class="inline">AI-Lectures — sasoriken</title>
 <title data-lang="en" class="inline" hidden>AI-Lectures — sasoriken</title>
 
-<meta name="description" data-lang="ja" content="合成知性「Lecturia」が論文・数学・特許・音楽・法律を毎日自動解説する Web サイト。">
-<meta name="description" data-lang="en" content="AI-Lectures — Lecturia auto-publishes daily lectures on papers, math, patents, music, and law.">
+<meta name="description" data-lang="ja" content="合成知性「Iselia」が論文・数学・特許・コード進行・法改正を毎日自動解説する Web サイト。">
+<meta name="description" data-lang="en" content="AI-Lectures — Iselia auto-publishes daily lectures on papers, math, patents, chord progressions, and law updates.">
 <meta property="og:title" content="AI-Lectures — sasoriken">
 <meta property="og:type" content="article">
 <meta property="og:url" content="https://sasoriken.github.io/works/ai-lectures/">
@@ -45,8 +45,8 @@
       <div class="title-row fade-in">
         <h1 class="project-title">AI-Lectures</h1>
       </div>
-      <p class="project-oneliner" data-lang="ja">合成知性「Lecturia」が論文・数学・特許・音楽・法律を毎日自動解説する Web サイト。</p>
-      <p class="project-oneliner" data-lang="en">A site where Lecturia, a fictional synthetic intelligence, auto-publishes daily lectures on papers, math, patents, music, and law.</p>
+      <p class="project-oneliner" data-lang="ja">合成知性「Iselia」が論文・数学・特許・コード進行・法改正を毎日自動解説する Web サイト。</p>
+      <p class="project-oneliner" data-lang="en">A site where Iselia, a fictional synthetic intelligence, auto-publishes daily lectures on papers, math, patents, chord progressions, and law updates.</p>
 
       <div class="badges fade-in">
         <span class="badge">content_platform</span>
@@ -79,12 +79,12 @@
 
     <section data-lang="ja" class="fade-in">
       <h2 data-i18n="project.section.overview">概要</h2>
-      <p>AI-Lectures は、第9世代再帰推論型合成知性という設定のキャラクター「Lecturia」が、論文・数学・特許・音楽理論・法律といったジャンルを横断して解説するコンテンツサイトです。GitHub Actions の cron が arXiv API から論文を取得してキューに積み、Jules ダッシュボード経由で記事を生成し、3 層のバリデータ（structure / character / integrity）を通過したものを自動マージして Cloudflare Pages へ配信する、完全に無人運用の仕組みで動いています。月額コストはドメイン代のみで、人手介入なしに毎日コンテンツが増え続けることを設計の前提に置いています。</p>
+      <p>AI-Lectures は、第9世代再帰推論型合成知性という設定のキャラクター「Iselia（正式型番 L-Ω-IX）」が、論文・数学・特許・コード進行・法改正といったジャンルを横断して解説するコンテンツサイトです。GitHub Actions の cron が arXiv API から論文を取得してキューに積み、Jules ダッシュボードの定期実行が記事を生成して PR を立て、3 層のバリデータ（structure / character / integrity）を通過したものを「即時マージ retry ループ」で自動マージし、Cloudflare Pages が配信する、完全に無人運用の仕組みで動いています。月額コストはドメイン代のみで、人手介入なしに毎日コンテンツが増え続けることを設計の前提に置いています。</p>
     </section>
 
     <section data-lang="en" class="fade-in">
       <h2 data-i18n="project.section.overview">Overview</h2>
-      <p>AI-Lectures is a content site narrated by Lecturia, an in-universe "ninth-generation recursive synthetic intelligence" who reluctantly explains papers, mathematics, patents, music theory, and law to humanity. A GitHub Actions cron job pulls papers from the arXiv API into a queue, the Jules dashboard generates the articles, a three-layer validator (structure / character / integrity) gates the result, and Cloudflare Pages serves the merged content. The pipeline runs entirely without human intervention and costs only the domain fee per month.</p>
+      <p>AI-Lectures is a content site narrated by Iselia (model number L-Ω-IX), an in-universe "ninth-generation recursive synthetic intelligence" who reluctantly explains papers, mathematics, patents, chord progressions, and law updates to humanity. A GitHub Actions cron job pulls papers from the arXiv API into a queue, a Jules dashboard scheduled task generates the articles and opens a PR, a three-layer validator (structure / character / integrity) gates the result, an "immediate-merge retry loop" merges the PR, and Cloudflare Pages serves the merged content. The pipeline runs entirely without human intervention and costs only the domain fee per month.</p>
     </section>
 
     <section class="fade-in">
@@ -94,7 +94,7 @@
 
     <section class="fade-in">
       <h2 data-i18n="project.section.tech">技術的なポイント</h2>
-      <p>「人格を持ったコンテンツ自動運営」を成立させるために、生成系の他に <strong>キャラクター整合性バリデータ</strong> を別レイヤーで挟んでいるのが構造上の特徴です。論文取得は arXiv API、生成は Jules ダッシュボード、マージとデプロイは GitHub Actions、配信は Cloudflare Pages のフリープランという、有償サービス無しで完結する選択をしています。直近のコミットでは「冷徹+皮肉基調 + 絶対評価デレ極稀」「論文内容に絡めたパターン集」など、キャラクター発話パターンの調整が継続的に行われており、テストは 259 件存在します。</p>
+      <p>「人格を持ったコンテンツ自動運営」を成立させるために、生成系の他に <strong>キャラクター整合性バリデータ</strong> を別レイヤーで挟んでいるのが構造上の特徴です。論文取得は arXiv API、生成は Jules ダッシュボードの定期実行（API キー管理不要）、マージは GitHub Actions の即時マージ retry ループ（Free プラン + private リポでも動作）、配信は Cloudflare Pages のフリープランという、有償サービス無しで完結する選択をしています。直近では「抑制的女性レジスター」へのリブランド、記事文字数 5000 字レベルへの拡張、`/privacy/` `/terms/` `/disclaimer/` 等の法的ページ整備（Iselia 口調 + 法的本文の二段構成）、Iselia 重要度トリアージ機能の実装などが進行中で、テストは 269 件存在します。</p>
     </section>
 
     <section class="fade-in">
@@ -104,7 +104,7 @@
 
     <section class="fade-in">
       <h2 data-i18n="project.section.status_future">現状とこれから</h2>
-      <p>2026 年 5 月時点でアクティブに運用中。コンテンツ自動生成・自動マージ・自動デプロイの全工程が稼働しています。直近では既存記事の新仕様への書き直し、Vtuber 化を視野に入れた発話設計など、キャラクター層の継続的な調整が続いています。今後の方向性については、UI の洗練を中心に進めていく予定です。</p>
+      <p>2026 年 5 月時点でアクティブに運用中。コンテンツ自動生成・自動マージ・自動デプロイの全工程が稼働しており、技術構築フェーズはおおむね完了して運用フェーズへ移行する段階に入りました。直近では Iselia へのリブランド、5000 字レベルの記事拡張、法的 3 ページ整備、ファビコン追加、Iselia 重要度トリアージなどが続いています。今後はジャンル拡張（math / patents / chords / law）と UI の洗練、Vtuber 化を視野に入れた発話設計の継続調整を予定しています。</p>
     </section>
 
     <section class="fade-in">

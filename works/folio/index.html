@@ -72,12 +72,12 @@
 
     <section data-lang="ja" class="fade-in">
       <h2 data-i18n="project.section.overview">概要</h2>
-      <p>Folio は、小説を「3D の本」として読む仮想図書館の体験を提供する Web アプリです。<code>.3dbook</code> という独自フォーマット（glTF の拡張仕様 <code>EXT_3d_book_data</code> を JSON で表現）を中心に、3D の本棚から本を取り出して読む読者向け面 <code>/library</code> と、<code>.3dbook</code> を編集・エクスポートする著者向け面 <code>/bindery</code> を、ひとつの SPA の中に同居させています。本という物体性とデジタルの編集性を 1 つのアプリで両立しようとする実験的なプロジェクトです。</p>
+      <p>Folio は、小説を「3D の本」として読む仮想図書館の体験を提供する Web アプリです。本のデータを独自フォーマット（3D 標準フォーマット glTF の拡張として設計、JSON で表現）にまとめ、これを中心に「3D の本棚から本を取り出して読む読者向け画面」と「3D の本を編集・エクスポートする著者向け画面」を、ひとつの Web アプリの中に同居させています。本という物体性とデジタルの編集性を 1 つのアプリで両立しようとする実験的なプロジェクトです。</p>
     </section>
 
     <section data-lang="en" class="fade-in">
       <h2 data-i18n="project.section.overview">Overview</h2>
-      <p>Folio is a single-page web app built around the idea of reading novels as 3D books. It centers on a custom <code>.3dbook</code> format (a JSON expression of a proposed glTF extension, <code>EXT_3d_book_data</code>) and exposes two surfaces in one SPA: <code>/library</code>, a reader-facing 3D bookshelf, and <code>/bindery</code>, an author-facing editor that produces and exports <code>.3dbook</code> files. It tries to keep the tactile feel of a physical book and the editability of a digital format inside one continuous experience.</p>
+      <p>Folio is a single-page web app built around the idea of reading novels as 3D books. The book itself is stored in a custom JSON format designed as an extension to the glTF 3D standard. The app has two surfaces in one place: a reader-facing 3D bookshelf, where you pick a book off a shelf and read it; and an author-facing editor that lets you compose and export 3D books. It tries to keep the tactile feel of a physical book and the editability of a digital format inside one continuous experience.</p>
     </section>
 
     <section class="fade-in">
@@ -87,7 +87,7 @@
 
     <section class="fade-in">
       <h2 data-i18n="project.section.tech">技術的なポイント</h2>
-      <p>設計の北極星として「疎結合 4 層（Presentation → Application → Domain ↔ Infrastructure）」「<code>useFrame</code> 内で new 禁止による GC スパイクゼロ」「<code>.3dbook</code> を Zod スキーマから型派生させる単一契約」「世界観連動 (<code>environmentDelta</code>) を v0.1 から経路確保」の 4 点を明文化し、それらをカスタム ESLint ルール (<code>folio/no-allocation-in-frame</code>)・<code>import/no-restricted-paths</code>・Zod スキーマで機械的に保証する形に落としているのが特徴です。テストは Vitest（単体）と Playwright（E2E）の二段構え。Vite + TypeScript を採用し、ホットリロード前提の開発フローを取ります。</p>
+      <p>設計の指針を 4 つに絞って明文化しているのが特徴です。具体的には、表示・アプリケーション・ドメイン・インフラの 4 層に疎結合化すること、毎フレーム呼ばれる描画ループ内で新規オブジェクトを生成させずガベージコレクションの負荷を抑えること、ファイルフォーマット定義を一箇所のスキーマから自動的に型として導出する（仕様と実装が必ず一致する）こと、そして読書中の世界観に応じて環境を変化させるための入り口を最初のバージョンから確保しておくことの 4 点です。これらをカスタムの ESLint ルールとスキーマで機械的に保証する仕組みに落としています。テストは単体テストと E2E テストの二段構えで、Vite + TypeScript を採用したホットリロード前提の開発フローを取ります。</p>
     </section>
 
     <section class="fade-in">
@@ -97,7 +97,7 @@
 
     <section class="fade-in">
       <h2 data-i18n="project.section.status_future">現状とこれから</h2>
-      <p>2026 年 5 月開始の比較的新しいプロジェクトで、マイルストーン M5「開いた本の中央くぼみ (gutter) の表現」までが取り込まれています。設計ドキュメント (<code>DESIGN.md</code>, <code>TECH_STACK.md</code>) が継続的に更新されており、フェーズを切って段階的に機能を積み上げる進行をしています。今後の公開時期や配布形態をどうするかはまだ未定です。</p>
+      <p>2026 年 5 月開始の比較的新しいプロジェクトで、現在は「開いた本の中央くぼみ（紙の本のページが本の綴じ目に向かってわずかに凹む表現）」までが取り込まれた段階です。設計ドキュメントを継続的に更新しつつ、マイルストーンを切って段階的に機能を積み上げる進行をしています。今後の公開時期や配布形態はまだ未定です。</p>
     </section>
 
     <section class="fade-in">
