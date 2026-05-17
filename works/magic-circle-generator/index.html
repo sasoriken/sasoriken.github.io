@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="site-root" content="../../">
+
+<title data-lang="ja" class="inline">3D 魔法陣アニメジェネレータ — sasoriken</title>
+<title data-lang="en" class="inline" hidden>3D Magic Circle Generator — sasoriken</title>
+
+<meta name="description" data-lang="ja" content="ゲーム・映像制作向けに 3D 魔法陣をプロシージャル生成し、アニメ付き GLB 等で書き出せるツール。">
+<meta name="description" data-lang="en" content="A procedural 3D magic-circle generator for game and video production, exporting to animated GLB, OBJ, PNG, and spritesheets.">
+<meta property="og:title" content="3D Magic Circle Generator — sasoriken">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sasoriken.github.io/works/magic-circle-generator/">
+<meta property="og:image" content="https://sasoriken.github.io/assets/projects/magic-circle-generator/1.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2E7D3'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23B8722B' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23B8722B'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="../../" class="brand">sasoriken<span class="brand-dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="primary">
+      <ul class="nav-links">
+        <li><a href="../" data-i18n="nav.works">Works</a></li>
+        <li><a href="../../about/" data-i18n="nav.about">About</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-set="ja" aria-pressed="true">JP</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-i18n="nav.menu">メニュー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="project-hero">
+    <div class="container">
+      <div class="title-row fade-in">
+        <h1 class="project-title" data-lang="ja">3D 魔法陣アニメジェネレータ</h1>
+        <h1 class="project-title" data-lang="en">3D Magic Circle Animation Generator</h1>
+        <span class="featured-badge" style="position: static;">★ Featured</span>
+      </div>
+      <p class="project-oneliner" data-lang="ja">ゲーム・映像制作向けに 3D 魔法陣をプロシージャル生成し、アニメ付き GLB 等で書き出せるツール。</p>
+      <p class="project-oneliner" data-lang="en">A procedural 3D magic-circle generator for game and video production, exporting to animated GLB, OBJ, PNG, and spritesheets.</p>
+
+      <div class="badges fade-in">
+        <span class="badge">gamedev</span>
+        <span class="badge badge--status" data-status="active"><span class="status-dot" aria-hidden="true"></span>active</span>
+        <span class="badge badge--pricing" data-pricing="freemium">PRO + FREE</span>
+        <span class="badge">Web / Windows</span>
+        <span class="badge">2025-12 — 2026-05</span>
+      </div>
+
+      <div class="project-buttons fade-in">
+        <a class="btn btn--primary" href="https://varse.booth.pm/items/8044318" rel="noopener" target="_blank">BOOTH (PRO + FREE) ↗</a>
+      </div>
+      <p class="placeholder-note" style="margin-top: var(--space-3); display: inline-block;" data-lang="ja">PRO 版と FREE 版は BOOTH 上の同じ商品ページから入手できます。</p>
+      <p class="placeholder-note" style="margin-top: var(--space-3); display: inline-block;" data-lang="en">Both PRO and FREE editions are distributed on the same BOOTH page.</p>
+    </div>
+  </section>
+
+  <section class="container fade-in">
+    <div class="shot-gallery">
+      <figure>
+        <img src="../../assets/projects/magic-circle-generator/1.png" alt="3D 魔法陣アニメジェネレータの画面（1）">
+        <figcaption data-lang="ja">3D 魔法陣アニメジェネレータの画面（1）</figcaption>
+        <figcaption data-lang="en">3D Magic Circle Animation Generator screenshot (1)</figcaption>
+      </figure>
+      <figure>
+        <img src="../../assets/projects/magic-circle-generator/2.png" alt="3D 魔法陣アニメジェネレータの画面（2）">
+        <figcaption data-lang="ja">3D 魔法陣アニメジェネレータの画面（2）</figcaption>
+        <figcaption data-lang="en">3D Magic Circle Animation Generator screenshot (2)</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <article class="project-body">
+
+    <section data-lang="ja" class="fade-in">
+      <h2 data-i18n="project.section.overview">概要</h2>
+      <p>3D 魔法陣アニメジェネレータは、リング・多角形・星形・ルーン文字・パーティクル等のレイヤーを積み重ねて魔法陣をプロシージャルに組み立て、ゲームエンジンや映像編集ソフトで使えるアセットとして書き出せるツールです。Web 版と Tauri v2 によるネイティブデスクトップ版（Windows）のデュアル構成で、ブラウザでもアプリでも同じ機能が使えます。アニメ付き GLB、OBJ、透過 PNG、連番 PNG（ZIP）、スプライトシート、テクスチャ PNG など複数の出力形式に対応し、エンジン側に持ち込んでそのまま使える前提で作られています。基本セット 10 種のプリセット（Classic / Runic / Demonic / Grand / Celestial / Chrono / Cyber / Bloom / Celtic / Dense）に加え、JSON インポートで追加コレクション（DLC 想定）も読めます。</p>
+    </section>
+
+    <section data-lang="en" class="fade-in">
+      <h2 data-i18n="project.section.overview">Overview</h2>
+      <p>The 3D Magic Circle Animation Generator builds magic circles procedurally by stacking layers — rings, polygons, star shapes, runes, particles, auras — and exports them as engine-ready assets. It ships as a dual Web / Tauri v2 desktop app (Windows), so the same toolset runs in a browser or as a native app. Outputs include animated GLB with multiple clips, OBJ, transparent PNG, frame-by-frame PNG ZIPs, spritesheets, and flat texture PNGs, all designed to drop straight into a game engine or compositor. Ten built-in presets (Classic, Runic, Demonic, Grand, Celestial, Chrono, Cyber, Bloom, Celtic, Dense) come standard, and a JSON import path lets the tool ingest additional preset collections.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.motivation">動機・経緯</h2>
+      <p>このツールはもともと Hakoniwa Vault 内部の魔法陣ツールとして始まり、後に独立した別リポジトリ (<code>magic-circle-generator</code>) として分離された経緯があります。動機としては、Hakoniwa Vault のディスプレイ用に魔法陣を作っていたときに、プロシージャルで 3D モデルを作ることそのものへの興味が湧いたことに加え、これにデータ駆動設計を組み合わせたら面白そうだと感じたためです。そこで本体から分離して、本格的に一つのツールとして作り直しました。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.tech">技術的なポイント</h2>
+      <p>レンダリングは Three.js、デスクトップ化は Tauri v2 + Rust、ビルドは Vite、リポジトリ管理は npm workspaces + pnpm-workspace で <code>apps/web/</code> <code>packages/core/</code> <code>packages/shared/</code> のモノレポ構成を取っています。コア部分は <code>Assembler.js</code>（JSON → Three.js シーン）、コンポーネント（リング・図形・ルーン・エフェクト）、エクスポーター（<code>AnimationExporter</code> が GLB のマルチクリップ出力を担当）、ファクトリ（バリエーション生成）、モディファイア（マテリアル変換）、プリセットというモジュール分割で、GUI と切り離して使える設計です。PRO と FREE はビルドスクリプト (<code>npm run tauri:build</code> / <code>npm run tauri:build:free</code>) の段階で切り替わり、それぞれ別パッケージとして <code>release-package/</code> と <code>release-package-free/</code> に出力されます。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.lessons">苦労した点・学んだこと</h2>
+      <p>学びの中心はデータ駆動設計の有用性です。優れているところを具体的に挙げると、保守性が非常に良いこと、作成した魔法陣を構造化した文字列の塊だけで保存・復元できるため共有に向くこと、そして同じ仕組みのまま後々 DLC 等として追加販売も可能なこと、の三点です。この設計の良さを実装を通して肌で感じました。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.status_future">現状とこれから</h2>
+      <p>2026 年 5 月時点で開発はアクティブに進行中。PR 番号は #236 を超えており、CI の自動マージフロー（jules ラベル検知、即時マージリトライ等）が継続的に整備されています。法務面の整備（EULA、プライバシーポリシー、サードパーティ通知、コマーシャルリリースチェックリスト）は日英両言語版が揃っており、有料リリースを前提とした体制が整えられています。今後のロードマップは未定。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.stack">技術スタック</h2>
+      <ul class="tech-tags">
+        <li class="tech-tag">Three.js</li>
+        <li class="tech-tag">Tauri v2 (Rust)</li>
+        <li class="tech-tag">Vite</li>
+        <li class="tech-tag">npm workspaces / pnpm</li>
+        <li class="tech-tag">Jest</li>
+        <li class="tech-tag">JavaScript</li>
+      </ul>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.related">関連プロジェクト</h2>
+      <div class="related-grid">
+        <a class="related-card" href="../hakoniwa-vault/">
+          <div class="title">★ Hakoniwa Vault</div>
+          <div class="one" data-lang="ja">3D モデルを「収集・整理・展示・撮影」できる統合管理ソフト（本ツールの前身を含んでいた）。</div>
+          <div class="one" data-lang="en">An integrated 3D asset manager (the predecessor of this tool was bundled inside).</div>
+        </a>
+      </div>
+    </section>
+
+    <a class="back-link" href="../" data-i18n="project.back">作品一覧に戻る</a>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-row">
+      <p class="footer-copy">&copy; <span data-footer-year>2026</span> sasoriken</p>
+      <ul class="contact-list" style="justify-content: center;">
+        <li><a class="contact-link" href="https://x.com/usaori11" rel="noopener" target="_blank" aria-label="X (Twitter)"><span aria-hidden="true">✕</span></a></li>
+        <li><a class="contact-link" href="https://github.com/sasoriken" rel="noopener" target="_blank" aria-label="GitHub"><span aria-hidden="true">⌥</span></a></li>
+        <li><a class="contact-link" data-u="data.gachizei.c" data-d="gmail.com" href="#" aria-label="Email"><span aria-hidden="true">✉</span></a></li>
+        <li><a class="contact-link" href="https://varse.booth.pm/" rel="noopener" target="_blank" aria-label="BOOTH"><span aria-hidden="true">▢</span></a></li>
+        <li><a class="contact-link" href="https://usasori-data.itch.io/" rel="noopener" target="_blank" aria-label="itch.io"><span aria-hidden="true">◆</span></a></li>
+      </ul>
+      <p class="footer-tag" data-i18n="footer.tag">Built with care, by sasoriken.</p>
+    </div>
+    <div class="footer-featured">
+      <span class="footer-featured-label" data-i18n="footer.featured_label">Featured:</span>
+      <a class="footer-featured-item" href="../hakoniwa-vault/">★ Hakoniwa Vault</a>
+      <a class="footer-featured-item" href="../magic-circle-generator/">
+        <span data-lang="ja">★ 3D 魔法陣アニメジェネレータ</span>
+        <span data-lang="en">★ Magic Circle Generator</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>

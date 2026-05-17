@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="site-root" content="../../">
+
+<title data-lang="ja" class="inline">Novel Engine（設計プロジェクト） — sasoriken</title>
+<title data-lang="en" class="inline" hidden>Novel Engine (Design Project) — sasoriken</title>
+
+<meta name="description" data-lang="ja" content="小説を AST 的な構造化データとして管理する、全自動執筆パイプラインの設計プロジェクト。">
+<meta name="description" data-lang="en" content="A design project for an autonomous novel-writing pipeline that treats prose as AST-like structured data.">
+<meta property="og:title" content="Novel Engine — sasoriken">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sasoriken.github.io/works/novel-engine-design/">
+<meta property="og:image" content="https://sasoriken.github.io/assets/projects/novel-engine-design/1.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2E7D3'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23B8722B' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23B8722B'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="../../" class="brand">sasoriken<span class="brand-dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="primary">
+      <ul class="nav-links">
+        <li><a href="../" data-i18n="nav.works">Works</a></li>
+        <li><a href="../../about/" data-i18n="nav.about">About</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-set="ja" aria-pressed="true">JP</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-i18n="nav.menu">メニュー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="project-hero">
+    <div class="container">
+      <div class="title-row fade-in">
+        <h1 class="project-title" data-lang="ja">Novel Engine（設計プロジェクト）</h1>
+        <h1 class="project-title" data-lang="en">Novel Engine (Design Project)</h1>
+      </div>
+      <p class="project-oneliner" data-lang="ja">小説を AST 的な構造化データとして管理する、全自動執筆パイプラインの設計プロジェクト。</p>
+      <p class="project-oneliner" data-lang="en">A design project for an autonomous novel-writing pipeline that treats prose as AST-like structured data.</p>
+
+      <div class="badges fade-in">
+        <span class="badge">experiment</span>
+        <span class="badge badge--status" data-status="maintained"><span class="status-dot" aria-hidden="true"></span>maintained</span>
+        <span class="badge badge--pricing" data-pricing="unreleased">unreleased</span>
+        <span class="badge">CLI / Web</span>
+        <span class="badge">2026-05 —</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container fade-in">
+    <div class="shot-gallery">
+      <figure>
+        <img src="../../assets/projects/novel-engine-design/1.png" alt="Novel Engine の画面（1）">
+        <figcaption data-lang="ja">Novel Engine の画面（1）</figcaption>
+        <figcaption data-lang="en">Novel Engine screenshot (1)</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <article class="project-body">
+
+    <section data-lang="ja" class="fade-in">
+      <h2 data-i18n="project.section.overview">概要</h2>
+      <p>Novel Engine は、小説を「散文」ではなく「構造化データ」として管理するための執筆パイプラインの設計プロジェクトです。コンパイラの AST と同じ思想で文章を扱い、<code>Story Graph</code>（設定・キャラクター関係）と <code>Novel AST</code>（散文の構造）を別レイヤーで保持し、それらを Rendering して最終的な小説テキストを出力する、というアーキテクチャを採用しています。設計の動機は、AI 執筆ツールがステートレスであるために長編で矛盾が蓄積していくという問題を解くこと。最小単位を「Beat（一つの意味的行為：発言一つ・行動一つ・情景段落一つ）」として、矛盾検出を SQL クエリレベルで成立させられるようにしています。</p>
+    </section>
+
+    <section data-lang="en" class="fade-in">
+      <h2 data-i18n="project.section.overview">Overview</h2>
+      <p>Novel Engine is a design project for a writing pipeline that treats a novel not as prose but as structured data. The architecture follows compiler-AST thinking: a <code>Story Graph</code> (settings and character relationships) and a <code>Novel AST</code> (the structure of the prose itself) live in separate layers, and the final novel text is the result of rendering the two together. The motivation is to attack the stateless-AI problem — that AI writing tools forget context and accumulate inconsistencies in long-form work. The smallest unit is the "Beat" (a single semantic act: one line of dialogue, one action, one paragraph of scenery), chosen so that contradiction detection can run as SQL queries rather than as another LLM call.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.motivation">動機・経緯</h2>
+      <p>実際の小説を執筆する中で「設定ファイルを AI に毎回読み込ませる必要がある」「設定変更時の矛盾検出が手動」「文体一貫性の維持が会話依存」といった問題に直面し、これらを構造化・機械化するアーキテクチャとして本プロジェクトが構想されました。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.tech">技術的なポイント</h2>
+      <p>設計の核は「Beat」を最小単位に置いたこと、散文自体も JSON で構造化すること、そして時系列付きの関係性を扱うために Story Graph をグラフ DB 的に設計したこと（Phase 1 は SQLite で代替）の三つです。散文を構造化することで、矛盾検出を AI 非依存の SQL クエリで実現でき、<code>style_template</code> を Beat 単位で適用することで文体一貫性が機械的に保証され、通常の git diff では捉えられない「意味の変化」を Semantic Diff として表現できる、という三点の機械保証を獲得しています。実装は Phase 1（DB スキーマ・矛盾検出・CLI）、Phase 2（Structurizer / WriterAgent / ContinuityChecker / ChangeManager / SemanticDiff）、Phase 3（Rendering Engine / Web UI / MCP サーバー）まで完了し、テスト 263 件が PASS する状態です。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.status_future">現状とこれから</h2>
+      <p>設計と Phase 1〜3 の実装が完了し、設計文書群（要件定義書・アーキテクチャ設計書・技術スタック仕様・具体例データモデル・未決事項と作業指示・商業化ロードマップ）が整備済み。商業化に向けたロードマップが既に書かれている段階ですが、現時点でこのプロジェクトはポートフォリオ上では「設計プロジェクト」として扱う方針です。</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.stack">技術スタック</h2>
+      <ul class="tech-tags">
+        <li class="tech-tag">SQLite</li>
+        <li class="tech-tag">MCP server</li>
+        <li class="tech-tag">Semantic Diff</li>
+        <li class="tech-tag">Story Graph / Novel AST</li>
+      </ul>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.related">関連プロジェクト</h2>
+      <div class="related-grid">
+        <a class="related-card" href="../hakoniwa-vault/">
+          <div class="title">★ Hakoniwa Vault</div>
+          <div class="one" data-lang="ja">3D モデル統合管理ソフト。</div>
+          <div class="one" data-lang="en">Integrated 3D asset manager.</div>
+        </a>
+        <a class="related-card" href="../magic-circle-generator/">
+          <div class="title" data-lang="ja">★ 3D 魔法陣アニメジェネレータ</div>
+          <div class="title" data-lang="en">★ Magic Circle Generator</div>
+          <div class="one" data-lang="ja">プロシージャル魔法陣ジェネレータ。</div>
+          <div class="one" data-lang="en">Procedural magic-circle generator.</div>
+        </a>
+      </div>
+    </section>
+
+    <a class="back-link" href="../" data-i18n="project.back">作品一覧に戻る</a>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-row">
+      <p class="footer-copy">&copy; <span data-footer-year>2026</span> sasoriken</p>
+      <ul class="contact-list" style="justify-content: center;">
+        <li><a class="contact-link" href="https://x.com/usaori11" rel="noopener" target="_blank" aria-label="X (Twitter)"><span aria-hidden="true">✕</span></a></li>
+        <li><a class="contact-link" href="https://github.com/sasoriken" rel="noopener" target="_blank" aria-label="GitHub"><span aria-hidden="true">⌥</span></a></li>
+        <li><a class="contact-link" data-u="data.gachizei.c" data-d="gmail.com" href="#" aria-label="Email"><span aria-hidden="true">✉</span></a></li>
+        <li><a class="contact-link" href="https://varse.booth.pm/" rel="noopener" target="_blank" aria-label="BOOTH"><span aria-hidden="true">▢</span></a></li>
+        <li><a class="contact-link" href="https://usasori-data.itch.io/" rel="noopener" target="_blank" aria-label="itch.io"><span aria-hidden="true">◆</span></a></li>
+      </ul>
+      <p class="footer-tag" data-i18n="footer.tag">Built with care, by sasoriken.</p>
+    </div>
+    <div class="footer-featured">
+      <span class="footer-featured-label" data-i18n="footer.featured_label">Featured:</span>
+      <a class="footer-featured-item" href="../hakoniwa-vault/">★ Hakoniwa Vault</a>
+      <a class="footer-featured-item" href="../magic-circle-generator/">
+        <span data-lang="ja">★ 3D 魔法陣アニメジェネレータ</span>
+        <span data-lang="en">★ Magic Circle Generator</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
