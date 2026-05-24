@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="site-root" content="../../">
+
+<title data-lang="ja" class="inline">Tessera — ドット絵コンパイラ DSL — sasoriken</title>
+<title data-lang="en" class="inline" hidden>Tessera — Pixel-Art Compiler DSL — sasoriken</title>
+
+<meta name="description" data-lang="ja" content="宣言的なプログラムをドット絵にコンパイルする TypeScript 埋め込み DSL、Tessera の紹介。AI が高水準コードを書き、決定論的コンパイラがピクセルに変換する。">
+<meta name="description" data-lang="en" content="Tessera — a TypeScript embedded DSL that compiles declarative programs into pixel art. Models write high-level code; a deterministic compiler turns it into pixels.">
+<meta property="og:title" content="Tessera — sasoriken">
+<meta property="og:type" content="article">
+<meta property="og:url" content="https://sasoriken.github.io/works/tessera/">
+<meta property="og:image" content="https://sasoriken.github.io/assets/projects/tessera/1.png">
+<meta name="twitter:card" content="summary_large_image">
+
+<link rel="stylesheet" href="../../assets/css/main.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2E7D3'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23B8722B' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23B8722B'/%3E%3C/svg%3E">
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="../../" class="brand">sasoriken<span class="brand-dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="primary">
+      <ul class="nav-links">
+        <li><a href="../" data-i18n="nav.works">Works</a></li>
+        <li><a href="../../about/" data-i18n="nav.about">About</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-set="ja" aria-pressed="true">JP</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-i18n="nav.menu">メニュー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="project-hero">
+    <div class="container">
+      <div class="title-row fade-in">
+        <h1 class="project-title">Tessera</h1>
+      </div>
+      <p class="project-oneliner" data-lang="ja">宣言的なプログラムをドット絵にコンパイルする TypeScript 埋め込み DSL。AI が高水準コードを書き、決定論的コンパイラがピクセルに変換する。</p>
+      <p class="project-oneliner" data-lang="en">A TypeScript embedded DSL that compiles declarative programs into pixel art — models write the high-level code, a deterministic compiler turns it into pixels.</p>
+
+      <div class="badges fade-in">
+        <span class="badge">gamedev</span>
+        <span class="badge badge--status" data-status="active"><span class="status-dot" aria-hidden="true"></span>active</span>
+        <span class="badge badge--pricing" data-pricing="unreleased">unreleased</span>
+        <span class="badge">TypeScript</span>
+        <span class="badge">2026 —</span>
+      </div>
+    </div>
+  </section>
+
+  <section class="container fade-in">
+    <div class="shot-gallery">
+      <figure>
+        <img src="../../assets/projects/tessera/1.png" alt="Tessera が生成したドット絵スプライト群">
+        <figcaption data-lang="ja">Tessera プログラムから生成されたスプライト群（自律コンテンツ工場のショートリスト）。</figcaption>
+        <figcaption data-lang="en">Sprites compiled from Tessera programs — a shortlist from the autonomous content factory.</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <article class="project-body">
+
+    <section data-lang="ja" class="fade-in">
+      <h2 data-i18n="project.section.overview">概要</h2>
+      <p>Tessera は、宣言的なプログラムをドット絵（ピクセルアート）にコンパイルする TypeScript 埋め込み DSL です。純粋で決定論的なコンパイラであり、ツールチェーンに AI 画像生成は一切含みません。想定する「作者」は生成 AI そのもので、モデルが高水準で合成的なコード（LLM が得意とする領域）を書き、コンパイラがそれをピクセルへと変換します（生の座標計算という LLM が苦手な部分をコンパイラが肩代わりする）。中核となる考え方は 3 つです。第一に「型としてのパレット」── パレットは宣言で定義し、すべての色引数はそのキーに制約されるため、パレット外の色は実行時の事故ではなくコンパイルエラーになります。第二に「第一級の時間」── スプライトは <code>(graphics, t, …)</code> の純関数で <code>t</code> は 0..1 に正規化され、コンパイラが <code>t</code> を走査してアニメフレームを生成するので時間的一貫性が構造的に保証されます。第三に「決定論」── 同じプログラムと同じシードからは、バイト単位で同一の画像が得られます。</p>
+    </section>
+
+    <section data-lang="en" class="fade-in">
+      <h2 data-i18n="project.section.overview">Overview</h2>
+      <p>Tessera is a TypeScript embedded DSL that compiles declarative programs into pixel art. It is a pure, deterministic compiler, and the toolchain contains no AI image generation. The intended author is a generative model: the model writes high-level, compositional code (what LLMs are good at) and the compiler turns it into pixels (taking over the raw coordinate math that LLMs are bad at). Three ideas sit at the core. First, palette-as-type: palettes are declared, every color argument is constrained to a palette key, so an off-palette color is a compile error rather than a runtime accident. Second, time as a first-class citizen: a sprite is a pure function of <code>(graphics, t, …)</code> with <code>t</code> normalized to 0..1, and the compiler sweeps <code>t</code> to produce animation frames, so temporal consistency is structural. Third, determinism: the same program plus the same seed yields a byte-for-byte identical image.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.motivation">動機・経緯</h2>
+      <p data-lang="ja">系譜は 3D 魔法陣アニメジェネレータ（magic-circle-generator）です。あちらで磨いた「決定論的コンパイラ＋シード付き乱数＋レイヤー合成＋時間軸」という設計を、ドット絵という別ドメインに持ち込んだのが出発点でした。生成 AI に画像そのものを描かせるのではなく、「絵を組み立てるプログラム」を書かせれば、構造・一貫性・再現性をコード側で保証できるのではないか── という発想から始まっています。</p>
+      <p data-lang="en">Tessera descends from the 3D Magic Circle Generator. The design honed there — a deterministic compiler, seeded RNG, layer compositing, and a time axis — was carried over into a new domain: pixel art. The starting hypothesis was that instead of having a generative model draw the image directly, you have it write a program that assembles the image, so that structure, consistency, and reproducibility can be guaranteed in code.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.tech">技術的なポイント</h2>
+      <p data-lang="ja">肝は言語そのものより API 設計です。AI が書きやすい高水準コンビネータ── <code>mirrorX</code>／<code>radial</code>／<code>repeat</code>／<code>distribute</code>、関係を宣言して座標はコンパイラが解く <code>box</code>／<code>anchor</code>／<code>attach</code>、前進運動学で手脚が外れない <code>joint</code>／<code>pose</code> ── を揃えています。プロトタイプ継承により、1 つのベーススプライトから <code>extend</code>（アニメ）と <code>repalette</code>（色だけ差し替えたバリアント）を生やせ、<code>part</code>／<code>override</code> で名前付きパーツだけを差し替えられます。PNG／GIF エンコーダは Node の <code>zlib</code> だけを使う純 TypeScript 実装（GIF89a＋LZW を自前実装）で、ネイティブ依存はゼロ。さらに LLM オーサリングの閉ループ── コード生成 → <code>node:vm</code> サンドボックス実行 → 構造化エラー修復（パレット外の色を含む）→ レンダ画像のビジョン講評 → 改訂 ── と、画像に加えて連結成分・パーツ bbox・はみ出し・ASCII グリフマップを並べる二系統のレンダレポートを実装しています。</p>
+      <p data-lang="en">The heart of the project is API design rather than the language itself. It offers high-level combinators that models find easy to write: <code>mirrorX</code>/<code>radial</code>/<code>repeat</code>/<code>distribute</code>; relational layout where you declare connections and the compiler solves coordinates (<code>box</code>/<code>anchor</code>/<code>attach</code>); and forward-kinematics <code>joint</code>/<code>pose</code> so limbs stay attached. Prototype inheritance lets a single base sprite grow into <code>extend</code> (animation) and <code>repalette</code> (a color-swapped variant), with <code>part</code>/<code>override</code> replacing just one named part. The PNG/GIF encoders are pure TypeScript using only Node's <code>zlib</code> (a hand-written GIF89a + LZW), with zero native dependencies. On top of that sits an LLM authoring loop — generate code → run in a <code>node:vm</code> sandbox → structured error repair (including off-palette colors) → vision critique of the rendered image → revise — plus a dual-channel render report that pairs the image with connected components, part bounding boxes, overflow, and an ASCII glyph map.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.lessons">苦労した点・学んだこと</h2>
+      <p data-lang="ja">「AI に書かせる」前提だからこそ、API は人間にとっての書きやすさよりも、モデルが破綻しにくい制約の置き方を優先する必要がありました。型としてのパレットはその代表例で、色のミスをコンパイル時に潰すことで講評ループの反復回数そのものを減らせます。サンドボックスは <code>node:vm</code> を使っていますが、これは隔離の便宜であって堅牢な境界ではない（コードは自分のモデルが自分のプロンプトから生成したものだ）という前提を明文化し、信頼できない入力では別プロセスやコンテナで実行すべきと割り切っています。制約をどこに置くかで AI の出力品質が大きく変わる、というのが一番の学びでした。</p>
+      <p data-lang="en">Because the whole premise is that a model does the writing, the API had to prioritize constraints that keep a model from going off the rails over what feels natural to a human. Palette-as-type is the clearest example: catching color mistakes at compile time directly reduces how many times the critique loop has to iterate. The sandbox uses <code>node:vm</code>, but the docs are explicit that this is a convenience for isolation, not a hard boundary — the code is generated by your own model from your own prompt — so for untrusted input it should run in a separate process or container. The biggest lesson was how much the placement of constraints shapes the quality of what the model produces.</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.status_future">現状とこれから</h2>
+      <p data-lang="ja">静的パイプライン（型パレット・プリミティブ・mirror／radial・ディザ・アウトライン）からアニメ GIF、プロトタイプ継承、再帰＋手続きパターン＋方向性陰影、LLM オーサリングループ＋レンダレポートまでが完了済みです。さらにその上に「自律コンテンツ工場」を載せ、<code>(program, seed)</code> を再現可能な遺伝子（genome）として扱い、無料の決定論ゲートでふるいにかけ → ニッチごとの最良を MAP-Elites アーカイブに保持し → コードレベルの変異で進化させ → キュレーションする、という生成パイプラインを GitHub Actions で定期・無人運用しています。ライセンスは専有／商用で、現時点では一般配布していません（一方で、Tessera を使ってあなたが生成したコンテンツ自体は、自由に利用・配布・販売できます）。</p>
+      <p data-lang="en">Done so far: the static pipeline (typed palettes, primitives, mirror/radial, dithering, outlining), animated GIF, prototype inheritance, recursion plus procedural patterns plus directional shading, and the LLM authoring loop with render reports. On top of that runs an autonomous content factory: it treats <code>(program, seed)</code> as a reproducible genome, sieves renders through a free deterministic gate, keeps the best per niche in a MAP-Elites archive, evolves winners through code-level mutation, and curates — a generation pipeline run unattended on a schedule via GitHub Actions. The license is proprietary/commercial and the tool is not generally distributed at this time (though content you generate with Tessera is yours to use, distribute, and sell freely).</p>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.stack">技術スタック</h2>
+      <ul class="tech-tags">
+        <li class="tech-tag">TypeScript</li>
+        <li class="tech-tag">Node.js ≥ 22</li>
+        <li class="tech-tag">node:test</li>
+        <li class="tech-tag">node:vm</li>
+        <li class="tech-tag">zlib (pure-TS PNG/GIF)</li>
+        <li class="tech-tag">@anthropic-ai/sdk</li>
+        <li class="tech-tag">GitHub Actions</li>
+        <li class="tech-tag">MAP-Elites</li>
+      </ul>
+    </section>
+
+    <section class="fade-in">
+      <h2 data-i18n="project.section.related">関連プロジェクト</h2>
+      <div class="related-grid">
+        <a class="related-card" href="../magic-circle-generator/">
+          <div class="title" data-lang="ja">★ 3D 魔法陣アニメジェネレータ</div>
+          <div class="title" data-lang="en">★ Magic Circle Generator</div>
+          <div class="one" data-lang="ja">Tessera の系譜元。プロシージャル魔法陣ジェネレータ。</div>
+          <div class="one" data-lang="en">Tessera's lineage — a procedural magic-circle generator.</div>
+        </a>
+        <a class="related-card" href="../unit-omega/">
+          <div class="title">UNIT-Ω</div>
+          <div class="one" data-lang="ja">GitHub Actions による完全無人運営のアーカイブ。</div>
+          <div class="one" data-lang="en">A fully autonomous archive run via GitHub Actions.</div>
+        </a>
+      </div>
+    </section>
+
+    <a class="back-link" href="../" data-i18n="project.back">作品一覧に戻る</a>
+  </article>
+
+</main>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-row">
+      <p class="footer-copy">&copy; <span data-footer-year>2026</span> sasoriken</p>
+      <ul class="contact-list" style="justify-content: center;">
+        <li><a class="contact-link" href="https://x.com/usaori11" rel="noopener" target="_blank" aria-label="X (Twitter)"><span aria-hidden="true">✕</span></a></li>
+        <li><a class="contact-link" href="https://github.com/sasoriken" rel="noopener" target="_blank" aria-label="GitHub"><span aria-hidden="true">⌥</span></a></li>
+        <li><a class="contact-link" data-u="data.gachizei.c" data-d="gmail.com" href="#" aria-label="Email"><span aria-hidden="true">✉</span></a></li>
+        <li><a class="contact-link" href="https://varse.booth.pm/" rel="noopener" target="_blank" aria-label="BOOTH"><span aria-hidden="true">▢</span></a></li>
+        <li><a class="contact-link" href="https://usasori-data.itch.io/" rel="noopener" target="_blank" aria-label="itch.io"><span aria-hidden="true">◆</span></a></li>
+      </ul>
+      <p class="footer-tag" data-i18n="footer.tag">Built with care, by sasoriken.</p>
+    </div>
+    <div class="footer-featured">
+      <span class="footer-featured-label" data-i18n="footer.featured_label">Featured:</span>
+      <a class="footer-featured-item" href="../hakoniwa-vault/">★ Hakoniwa Vault</a>
+      <a class="footer-featured-item" href="../magic-circle-generator/">
+        <span data-lang="ja">★ 3D 魔法陣アニメジェネレータ</span>
+        <span data-lang="en">★ Magic Circle Generator</span>
+      </a>
+    </div>
+  </div>
+</footer>
+
+<script src="../../assets/js/main.js"></script>
+</body>
+</html>
