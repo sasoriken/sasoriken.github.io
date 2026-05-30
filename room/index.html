@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="site-root" content="../">
+<!-- Keep this room out of search engines and link previews. -->
+<meta name="robots" content="noindex, nofollow, noarchive">
+<meta name="googlebot" content="noindex, nofollow">
+
+<title data-lang="ja" class="inline">秘密の部屋 — sasoriken</title>
+<title data-lang="en" class="inline" hidden>The Secret Room — sasoriken</title>
+
+<meta name="description" content="Private.">
+<meta property="og:title" content="—">
+
+<link rel="stylesheet" href="../assets/css/main.css">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23F2E7D3'/%3E%3Ccircle cx='16' cy='16' r='7' fill='none' stroke='%23B8722B' stroke-width='2'/%3E%3Ccircle cx='16' cy='16' r='2' fill='%23B8722B'/%3E%3C/svg%3E">
+
+<style>
+  /* ----- Secret room: a quiet, locked chamber ----- */
+  .room {
+    min-height: calc(100vh - 64px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--space-8) var(--space-4);
+    background:
+      radial-gradient(120% 90% at 50% -10%, rgba(184, 114, 43, 0.10), transparent 60%),
+      var(--color-bg-primary);
+  }
+  .room-card {
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    border: 1px solid var(--color-border);
+    border-radius: 16px;
+    background: var(--color-bg-secondary);
+    padding: var(--space-8) var(--space-6);
+    box-shadow: 0 24px 60px rgba(58, 42, 24, 0.12);
+  }
+  .room-lock {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--space-5);
+    display: grid;
+    place-items: center;
+    border-radius: 50%;
+    background: var(--color-bg-tertiary);
+    border: 1px solid var(--color-border);
+    font-size: 28px;
+    color: var(--color-accent);
+  }
+  .room-title {
+    font-family: var(--font-display);
+    font-size: var(--font-size-2xl);
+    margin: 0 0 var(--space-3);
+    color: var(--color-text-primary);
+  }
+  .room-sub {
+    color: var(--color-text-secondary);
+    margin: 0 auto var(--space-6);
+    max-width: 36ch;
+    line-height: 1.7;
+  }
+  .room-note {
+    margin: var(--space-6) auto 0;
+    max-width: 38ch;
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+    line-height: 1.6;
+  }
+  .room-enter {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-2);
+    width: 100%;
+    justify-content: center;
+  }
+  .room-creds {
+    margin-top: var(--space-5);
+    padding-top: var(--space-5);
+    border-top: 1px dashed var(--color-border);
+    font-size: var(--font-size-xs);
+    color: var(--color-text-tertiary);
+    font-family: var(--font-mono);
+    letter-spacing: 0.02em;
+  }
+  .room-back {
+    display: inline-block;
+    margin-top: var(--space-6);
+    font-size: var(--font-size-sm);
+    color: var(--color-text-tertiary);
+  }
+</style>
+</head>
+<body>
+
+<header class="site-header" role="banner">
+  <div class="container">
+    <a href="../" class="brand" aria-label="sasoriken — home">sasoriken<span class="brand-dot" aria-hidden="true"></span></a>
+    <nav class="nav" aria-label="primary">
+      <ul class="nav-links">
+        <li><a href="../works/" data-i18n="nav.works">Works</a></li>
+        <li><a href="../about/" data-i18n="nav.about">About</a></li>
+      </ul>
+      <div class="lang-toggle" role="group" aria-label="Language">
+        <button type="button" data-lang-set="ja" aria-pressed="true">JP</button>
+        <button type="button" data-lang-set="en" aria-pressed="false">EN</button>
+      </div>
+      <button class="menu-toggle" type="button" aria-expanded="false" data-i18n="nav.menu">メニュー</button>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <section class="room">
+    <div class="room-card fade-in">
+      <div class="room-lock" aria-hidden="true">🔒</div>
+
+      <h1 class="room-title" data-lang="ja">秘密の部屋</h1>
+      <h1 class="room-title" data-lang="en" hidden>The Secret Room</h1>
+
+      <p class="room-sub" data-lang="ja">
+        ここから先は鍵のかかった部屋。扉を開けるにはユーザー名とパスワードが必要です。
+      </p>
+      <p class="room-sub" data-lang="en" hidden>
+        Beyond this point is a locked room. Opening the door requires a username and password.
+      </p>
+
+      <p class="room-enter">
+        <a class="btn btn--primary" href="https://repo-doc-viewer.shita17tk.workers.dev/" rel="noopener noreferrer" target="_blank">
+          <span data-lang="ja">扉を開ける</span>
+          <span data-lang="en" hidden>Open the door</span>
+        </a>
+      </p>
+
+      <p class="room-creds" aria-hidden="true">user ✸✸✸✸ · pass ✸✸✸✸✸✸✸✸</p>
+
+      <p class="room-note" data-lang="ja">
+        認証は遷移先で行われます。正しいユーザー名とパスワードを知っているのはあなただけ。
+      </p>
+      <p class="room-note" data-lang="en" hidden>
+        Authentication happens on the destination. Only you know the correct username and password.
+      </p>
+
+      <a class="room-back" href="../" data-lang="ja">← 表のサイトへ戻る</a>
+      <a class="room-back" href="../" data-lang="en" hidden>← Back to the public site</a>
+    </div>
+  </section>
+</main>
+
+<script src="../assets/js/main.js"></script>
+</body>
+</html>
