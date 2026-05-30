@@ -246,6 +246,33 @@
   }
 
   /* ------------------------------------------------------------------
+   * Secret room — hidden door.
+   * Tapping the footer copyright 7 times within 3s opens the private
+   * room at /room/. The room links to a credential-protected site, so
+   * this is just a quiet, unadvertised entrance (no nav, no sitemap).
+   * ------------------------------------------------------------------ */
+  function initSecretRoom() {
+    const knock = document.querySelector('.footer-copy');
+    if (!knock) return;
+    const NEEDED = 7;
+    const WINDOW_MS = 3000;
+    let count = 0;
+    let timer = null;
+    knock.style.cursor = 'default';
+    knock.style.userSelect = 'none';
+    knock.addEventListener('click', () => {
+      count += 1;
+      clearTimeout(timer);
+      timer = setTimeout(() => { count = 0; }, WINDOW_MS);
+      if (count >= NEEDED) {
+        count = 0;
+        clearTimeout(timer);
+        location.href = ROOT + 'room/';
+      }
+    });
+  }
+
+  /* ------------------------------------------------------------------
    * Boot
    * ------------------------------------------------------------------ */
   function boot() {
@@ -255,6 +282,7 @@
     initHeaderScroll();
     initFooterYear();
     initFadeIn();
+    initSecretRoom();
     setLang(currentLang, { skipUrl: false }).then(() => {
       initWorksFilter();
     });
